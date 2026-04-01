@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Codes accès">
+<link rel="manifest" href="manifest.json">
+<title>Codes d'accès & ponits de parkings</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+
+:root {
+  --bg:#0a0f1e; --surface:#111827; --border:#1f2937;
+  --text:#e2e8f0; --muted:#4b5563;
+  --c1:#3b82f6; --c2:#8b5cf6; --c3:#10b981;
+  --c4:#f59e0b; /* parking = ambre */
+  --red:#ef4444;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;background:var(--bg);font-family:'Rajdhani',sans-serif;color:var(--text);}
+
+body::before{content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+  pointer-events:none;z-index:0;}
+
+/* ===== LAMP ===== */
+#lampScreen{position:fixed;inset:0;z-index:300;background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden;
+  transition:opacity .6s ease;}
+#lampScreen.exiting{opacity:0;pointer-events:none;}
+
+.spotlight{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:140px solid transparent;border-right:140px solid transparent;
+  border-top:260px solid rgba(255,220,80,.08);opacity:0;transition:opacity .6s;pointer-events:none;}
+.spotlight.on{opacity:1;}
+
+.wire-wrap{position:relative;width:40px;height:160px;margin-top:0;cursor:pointer;z-index:10;
+  display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;}
+.wire{width:2px;background:linear-gradient(to bottom,#555,#888);border-radius:2px;
+  transform-origin:top center;transition:height .15s;height:100%;}
+.knob{width:16px;height:16px;background:radial-gradient(circle at 40% 35%,#d4a847,#8b6914);
+  border-radius:50%;border:2px solid #a07830;box-shadow:0 2px 6px rgba(0,0,0,.5);
+  margin-top:4px;transition:transform .15s;flex-shrink:0;}
+
+.lamp-wrap{display:flex;flex-direction:column;align-items:center;position:relative;z-index:5;}
+.lamp-pole{width:6px;height:60px;background:linear-gradient(to bottom,#444,#333);border-radius:3px;}
+.lampshade{width:0;height:0;border-left:55px solid transparent;border-right:55px solid transparent;
+  border-top:70px solid #2a2a2a;position:relative;transition:filter .4s,border-top-color .4s;
+  filter:drop-shadow(0 0 0px transparent);}
+.lampshade::before{content:'';position:absolute;top:-70px;left:-55px;width:110px;height:70px;
+  background:linear-gradient(to bottom,#3a3a3a,#222);clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);}
+.lampshade::after{content:'';position:absolute;top:-68px;left:-53px;width:106px;height:4px;
+  background:rgba(255,255,255,.07);clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);}
+.lampshade.on{border-top-color:#8b6914;
+  filter:drop-shadow(0 0 30px rgba(255,200,50,.7)) drop-shadow(0 10px 40px rgba(255,180,30,.4));}
+.bulb{position:absolute;top:-52px;left:50%;transform:translateX(-50%);width:28px;height:32px;
+  background:radial-gradient(circle at 50% 40%,#fff5c0,#ffe066,#cc9900);border-radius:50% 50% 40% 40%;
+  opacity:0;transition:opacity .4s,box-shadow .4s;box-shadow:0 0 0px transparent;}
+.bulb.on{opacity:1;box-shadow:0 0 20px 8px rgba(255,220,60,.6),0 0 60px 20px rgba(255,180,30,.3);}
+.face{position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:20;font-size:22px;}
+.face.on{opacity:1;}
+.lamp-base{width:70px;height:12px;background:linear-gradient(to bottom,#444,#2a2a2a);border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.5);}
+.lamp-hint{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:#333;margin-top:30px;transition:color .4s;text-transform:uppercase;}
+.lamp-hint.pulled{color:#666;}
+.lamp-floor{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,#111,transparent);}
+
+/* ===== LOCK ===== */
+#lockScreen{position:fixed;inset:0;z-index:100;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;}
+.lock-logo{font-size:48px;margin-bottom:10px;animation:floatLogo 3s ease-in-out infinite;}
+@keyframes floatLogo{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.lock-title{font-family:'Share Tech Mono',monospace;font-size:22px;letter-spacing:6px;color:#fff;text-transform:uppercase;margin-bottom:4px;}
+.lock-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:3px;margin-bottom:40px;}
+.pin-display{display:flex;gap:12px;margin-bottom:32px;}
+.pin-char{width:44px;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:24px;
+  color:var(--c1);text-shadow:0 0 12px var(--c1);transition:border-color .2s,box-shadow .2s;}
+.pin-char.filled{border-color:var(--c1);box-shadow:0 0 12px rgba(59,130,246,.3);}
+.pin-char.error{border-color:var(--red)!important;color:var(--red)!important;text-shadow:0 0 12px var(--red)!important;
+  box-shadow:0 0 12px rgba(239,68,68,.3)!important;animation:shake .35s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+@keyframes scaryPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.15);opacity:.6;}}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:280px;}
+.key{background:var(--surface);border:1px solid var(--border);border-radius:12px;height:58px;
+  display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:18px;
+  color:var(--text);cursor:pointer;transition:background .1s,transform .1s;-webkit-user-select:none;user-select:none;letter-spacing:1px;}
+.key:active{background:rgba(59,130,246,.15);transform:scale(.94);border-color:var(--c1);}
+.key.del{font-size:20px;color:var(--muted);}
+.key.empty{visibility:hidden;cursor:default;}
+.lock-error{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);letter-spacing:2px;margin-top:16px;height:16px;}
+
+/* ===== APP ===== */
+.app{position:relative;z-index:1;min-height:100vh;}
+header{background:#111827;border-bottom:1px solid #1f2937;padding:16px 20px;text-align:center;
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;gap:12px;}
+.back-btn{position:absolute;left:16px;background:none;border:none;color:var(--muted);font-size:20px;
+  cursor:pointer;padding:4px 8px;font-family:'Share Tech Mono',monospace;display:none;transition:color .2s;}
+.back-btn:active{color:var(--text);}
+.logout-btn{position:absolute;right:16px;background:none;border:none;color:var(--muted);font-size:16px;
+  cursor:pointer;padding:4px 8px;font-family:'Share Tech Mono',monospace;transition:color .2s;}
+.logout-btn:active{color:var(--red);}
+header h1{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:3px;}
+
+.screen{display:none;padding:24px 16px 50px;}
+.screen.active{display:block;}
+
+/* LED blocks */
+@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
+@keyframes rotateLED{to{--angle:360deg;}}
+
+.terminal-select-block{position:relative;border-radius:18px;padding:2px;margin-bottom:20px;cursor:pointer;
+  background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));
+  animation:rotateLED 3s linear infinite;transition:transform .15s;}
+.terminal-select-block:active{transform:scale(.97);}
+.terminal-select-block::after{content:'';position:absolute;inset:-5px;border-radius:23px;
+  background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));
+  filter:blur(16px);opacity:.22;animation:rotateLED 3s linear infinite;z-index:-1;}
+
+.t1{--c-a:#3b82f6;--c-b:#8b5cf6;}
+.t2{--c-a:#8b5cf6;--c-b:#ec4899;}
+.t3{--c-a:#10b981;--c-b:#3b82f6;}
+.tp{--c-a:#f59e0b;--c-b:#ef4444;}
+
+.terminal-select-inner{background:var(--surface);border-radius:16px;padding:24px 20px;display:flex;align-items:center;justify-content:space-between;}
+.ts-left{display:flex;align-items:center;gap:14px;}
+.led-dot{width:10px;height:10px;border-radius:50%;animation:blink 1.8s ease-in-out infinite;flex-shrink:0;}
+.t1 .led-dot{background:var(--c1);box-shadow:0 0 10px var(--c1);}
+.t2 .led-dot{background:var(--c2);box-shadow:0 0 10px var(--c2);}
+.t3 .led-dot{background:var(--c3);box-shadow:0 0 10px var(--c3);}
+.tp .led-dot{background:var(--c4);box-shadow:0 0 10px var(--c4);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.ts-label{font-family:'Share Tech Mono',monospace;font-size:16px;letter-spacing:3px;text-transform:uppercase;}
+.t1 .ts-label{color:var(--c1);text-shadow:0 0 12px var(--c1);}
+.t2 .ts-label{color:var(--c2);text-shadow:0 0 12px var(--c2);}
+.t3 .ts-label{color:var(--c3);text-shadow:0 0 12px var(--c3);}
+.tp .ts-label{color:var(--c4);text-shadow:0 0 12px var(--c4);}
+.ts-count{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:4px;}
+.ts-arrow{font-size:20px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
+
+/* Locaux */
+.screen-title{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.t1-color{color:var(--c1);} .t2-color{color:var(--c2);} .t3-color{color:var(--c3);} .tp-color{color:var(--c4);}
+
+.cards-led{position:relative;border-radius:18px;padding:2px;
+  background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));animation:rotateLED 3s linear infinite;}
+.cards-led::after{content:'';position:absolute;inset:-5px;border-radius:23px;
+  background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));
+  filter:blur(16px);opacity:.18;animation:rotateLED 3s linear infinite;z-index:-1;}
+.cards-wrap{background:var(--surface);border-radius:16px;overflow:hidden;}
+.card{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:64px;
+  border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;gap:12px;
+  -webkit-user-select:none;user-select:none;}
+.card:last-child{border-bottom:none;}
+.card:active{background:rgba(255,255,255,.05);}
+.card-room{font-size:15px;font-weight:600;letter-spacing:.5px;}
+.card-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.card-hint{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.card-code{font-family:'Share Tech Mono',monospace;font-size:20px;font-weight:700;letter-spacing:4px;min-width:90px;text-align:right;transition:opacity .3s,transform .3s;}
+.t1-screen .card-code{color:var(--c1);text-shadow:0 0 14px var(--c1),0 0 28px rgba(59,130,246,.3);}
+.t2-screen .card-code{color:var(--c2);text-shadow:0 0 14px var(--c2),0 0 28px rgba(139,92,246,.3);}
+.t3-screen .card-code{color:var(--c3);text-shadow:0 0 14px var(--c3),0 0 28px rgba(16,185,129,.3);}
+.card-code[data-hidden="true"]{opacity:0;transform:scale(.8);pointer-events:none;}
+@keyframes flashCopy{0%,100%{opacity:1}40%{opacity:.15}}
+.flash{animation:flashCopy .4s ease;}
+
+/* ===== PARKING SCREEN ===== */
+.park-search-wrap{position:relative;margin-bottom:20px;}
+.park-search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:12px 16px 12px 42px;font-family:'Share Tech Mono',monospace;font-size:15px;
+  color:var(--text);outline:none;transition:border-color .2s;letter-spacing:2px;text-transform:uppercase;}
+.park-search:focus{border-color:var(--c4);box-shadow:0 0 0 2px rgba(245,158,11,.15);}
+.park-search::placeholder{color:var(--muted);text-transform:none;letter-spacing:1px;}
+.search-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+
+/* Résultat de recherche */
+.park-result{
+  display:none;
+  background:var(--surface);border-radius:16px;
+  border:2px solid var(--c4);
+  box-shadow:0 0 24px rgba(245,158,11,.2);
+  padding:20px;margin-bottom:20px;
+  text-align:center;
+}
+.park-result.show{display:block;}
+.park-result-pp{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;}
+.park-result-name{font-family:'Share Tech Mono',monospace;font-size:28px;font-weight:700;color:var(--c4);text-shadow:0 0 16px var(--c4);letter-spacing:4px;margin-bottom:16px;}
+.park-result-arrow{font-size:20px;color:var(--muted);margin-bottom:12px;}
+.park-result-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;}
+.park-result-portes{font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;color:var(--text);letter-spacing:3px;}
+.park-result-obs{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--red);letter-spacing:2px;margin-top:8px;}
+.park-result-sat{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:4px;}
+.park-no-result{display:none;text-align:center;padding:20px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:2px;}
+.park-no-result.show{display:block;}
+
+/* Liste complète parkings */
+.park-section-title{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.park-table-wrap{background:var(--surface);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.park-row{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px solid var(--border);gap:12px;cursor:pointer;transition:background .15s;-webkit-user-select:none;user-select:none;}
+.park-row:last-child{border-bottom:none;}
+.park-row:active{background:rgba(245,158,11,.08);}
+.park-pp{font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700;color:var(--c4);text-shadow:0 0 8px var(--c4);min-width:52px;}
+.park-sep{color:var(--muted);font-size:12px;}
+.park-portes{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text);flex:1;}
+.park-obs-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:4px;background:rgba(239,68,68,.15);color:var(--red);white-space:nowrap;}
+.park-sat-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:4px;background:rgba(245,158,11,.12);color:var(--c4);white-space:nowrap;}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#e2e8f0;color:#0a0f1e;font-family:'Share Tech Mono',monospace;font-size:13px;
+  padding:10px 24px;border-radius:50px;z-index:999;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  opacity:0;pointer-events:none;white-space:nowrap;letter-spacing:1px;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+</style>
+
+</head>
+<body>
+
+<!-- LAMP -->
+
+<div id="lampScreen">
+  <div class="spotlight" id="spotlight"></div>
+  <div class="lamp-wrap">
+    <div class="wire-wrap" id="wireWrap">
+      <div class="wire" id="wire"></div>
+      <div class="knob" id="knob"></div>
+    </div>
+    <div style="position:relative">
+      <div class="lampshade" id="lampshade">
+        <div class="bulb" id="bulb"></div>
+        <div class="face" id="face">😊</div>
+      </div>
+    </div>
+    <div class="lamp-base"></div>
+  </div>
+  <div class="lamp-hint" id="lampHint">TIRER LE FIL</div>
+  <div class="lamp-floor"></div>
+</div>
+
+<!-- LOCK -->
+
+<div id="lockScreen">
+  <div class="lock-logo">✈️</div>
+  <div class="lock-title">CODES ACCÈS & POINTS DE PARKINKS</div>
+  <div class="lock-sub">SAMSIC APMR ♿️</div>
+  <div class="pin-display">
+    <div class="pin-char" id="pc0"></div>
+    <div class="pin-char" id="pc1"></div>
+    <div class="pin-char" id="pc2"></div>
+    <div class="pin-char" id="pc3"></div>
+  </div>
+  <div class="keypad">
+    <div class="key" onclick="pressKey('A')">A</div>
+    <div class="key" onclick="pressKey('B')">B</div>
+    <div class="key" onclick="pressKey('C')">C</div>
+    <div class="key" onclick="pressKey('D')">D</div>
+    <div class="key" onclick="pressKey('E')">E</div>
+    <div class="key" onclick="pressKey('F')">F</div>
+    <div class="key" onclick="pressKey('M')">M</div>
+    <div class="key" onclick="pressKey('P')">P</div>
+    <div class="key" onclick="pressKey('R')">R</div>
+    <div class="key empty"></div>
+    <div class="key del" onclick="pressKey('⌫')">⌫</div>
+    <div class="key empty"></div>
+  </div>
+  <div class="lock-error" id="lockError"></div>
+</div>
+
+<!-- SCARY -->
+
+<div id="scaryOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:#000;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;">
+  <div style="font-size:64px;margin-bottom:20px;animation:scaryPulse .5s ease-in-out infinite;">⚠️</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:#ef4444;margin-bottom:16px;text-shadow:0 0 20px #ef4444;">ACCÈS NON AUTORISÉ</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#ef4444;letter-spacing:2px;line-height:2.2;margin-bottom:10px;opacity:.85;">TENTATIVE D'INTRUSION DÉTECTÉE<br>ADRESSE IP ENREGISTRÉE<br>SIGNALEMENT EN COURS...<br>RESPONSABLE SÉCURITÉ ALERTÉ</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:#6b7280;letter-spacing:2px;margin-bottom:24px;">ACCÈS BLOQUÉ · RÉESSAI DANS</div>
+  <div id="scaryCountdown" style="font-family:'Share Tech Mono',monospace;font-size:56px;color:#ef4444;text-shadow:0 0 30px #ef4444;font-weight:700;">30</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#374151;margin-top:30px;letter-spacing:1px;">SAMSIC SECURITY SYSTEM v2.4</div>
+</div>
+
+<!-- APP -->
+
+<div class="app" id="mainApp" style="display:none">
+  <header>
+    <button class="back-btn" id="backBtn" onclick="goHome()">←</button>
+    <div>
+      <h1 id="headerTitle">✈ Codes d'accès</h1>
+      <p id="headerSub">SAMSIC AIRPORT · CDG</p>
+    </div>
+    <button class="logout-btn" onclick="logout()">🔒</button>
+  </header>
+
+  <!-- HOME -->
+
+  <div class="screen active" id="screen-home">
+    <div class="terminal-select-block t1" onclick="goTerminal('t1')">
+      <div class="terminal-select-inner">
+        <div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 1</div><div class="ts-count">2 locaux</div></div></div>
+        <div class="ts-arrow">›</div>
+      </div>
+    </div>
+    <div class="terminal-select-block t2" onclick="goTerminal('t2')">
+      <div class="terminal-select-inner">
+        <div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2</div><div class="ts-count">4 locaux</div></div></div>
+        <div class="ts-arrow">›</div>
+      </div>
+    </div>
+    <div class="terminal-select-block t3" onclick="goTerminal('t3')">
+      <div class="terminal-select-inner">
+        <div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 3</div><div class="ts-count">5 locaux</div></div></div>
+        <div class="ts-arrow">›</div>
+      </div>
+    </div>
+    <div class="terminal-select-block tp" onclick="goTerminal('tp')">
+      <div class="terminal-select-inner">
+        <div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">🅿 Parkings → Portes</div><div class="ts-count">T1 · T2 — recherche par parking</div></div></div>
+        <div class="ts-arrow">›</div>
+      </div>
+    </div>
+    <footer>CRÉÉ PAR LEBKIRI · v4.0</footer>
+  </div>
+
+  <!-- T1 -->
+
+  <div class="screen t1-screen" id="screen-t1">
+    <div class="screen-title t1-color">▸ TERMINAL 1 · LOCAUX</div>
+    <div class="cards-led t1"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage / Repli</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2328A">C2328A</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Locale Fauteuils Porte 24</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="CB174">CB174</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- T2 -->
+
+  <div class="screen t2-screen" id="screen-t2">
+    <div class="screen-title t2-color">▸ TERMINAL 2 · LOCAUX</div>
+    <div class="cards-led t2"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="1976B">1976B</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli / Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C1987Z">C1987Z</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Hommes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Femmes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- T3 -->
+
+  <div class="screen t3-screen" id="screen-t3">
+    <div class="screen-title t3-color">▸ TERMINAL 3 · LOCAUX</div>
+    <div class="cards-led t3"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2307A">C2307A</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2468">C2468</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2468A">C2468A</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Hommes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Femmes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- PARKINGS -->
+
+  <div class="screen" id="screen-tp">
+    <div class="screen-title tp-color">▸ 🅿 POINTS PARKINGS → PORTES</div>
+
+```
+<!-- SEARCH -->
+<div class="park-search-wrap">
+  <span class="search-ico">🔍</span>
+  <input class="park-search" type="text" placeholder="Tape un parking ex: U06, B18, Y03…" oninput="searchParking(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+</div>
+
+<div class="park-result" id="parkResult">
+  <div class="park-result-pp">POINT PARKING</div>
+  <div class="park-result-name" id="prName"></div>
+  <div class="park-result-arrow">↓</div>
+  <div class="park-result-label">PORTE(S) D'EMBARQUEMENT</div>
+  <div class="park-result-portes" id="prPortes"></div>
+  <div class="park-result-obs" id="prObs"></div>
+  <div class="park-result-sat" id="prSat"></div>
+</div>
+<div class="park-no-result" id="parkNoResult">PARKING INTROUVABLE</div>
+
+<!-- T1 INTER / SAT 3 -->
+<div class="park-section-title">TERMINAL 1 · INTER — SAT 3 · JONCTION · SAT 1 · SAT 7</div>
+<div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
+  <div class="park-row" onclick="quickSearch('U06')"><div class="park-pp">U06</div><div class="park-sep">→</div><div class="park-portes">Porte 10</div></div>
+  <div class="park-row" onclick="quickSearch('U07')"><div class="park-pp">U07</div><div class="park-sep">→</div><div class="park-portes">Porte 11</div></div>
+  <div class="park-row" onclick="quickSearch('U09')"><div class="park-pp">U09</div><div class="park-sep">→</div><div class="park-portes">Porte 12</div></div>
+  <div class="park-row" onclick="quickSearch('U10')"><div class="park-pp">U10</div><div class="park-sep">→</div><div class="park-portes">Porte 14</div></div>
+  <div class="park-row" onclick="quickSearch('U11')"><div class="park-pp">U11</div><div class="park-sep">→</div><div class="park-portes">Portes 15 · 16</div></div>
+  <div class="park-row" onclick="quickSearch('U12')"><div class="park-pp">U12</div><div class="park-sep">→</div><div class="park-portes">Porte 18</div></div>
+  <div class="park-row" onclick="quickSearch('U13')"><div class="park-pp">U13</div><div class="park-sep">→</div><div class="park-portes">Porte 22</div></div>
+  <div class="park-row" onclick="quickSearch('U04')"><div class="park-pp">U04</div><div class="park-sep">→</div><div class="park-portes">Porte 23</div></div>
+  <div class="park-row" onclick="quickSearch('U03')"><div class="park-pp">U03</div><div class="park-sep">→</div><div class="park-portes">Porte 24</div></div>
+  <div class="park-row" onclick="quickSearch('U14')"><div class="park-pp">U14</div><div class="park-sep">→</div><div class="park-portes">Porte 26</div></div>
+  <div class="park-row" onclick="quickSearch('U15')"><div class="park-pp">U15</div><div class="park-sep">→</div><div class="park-portes">Porte 28</div></div>
+  <div class="park-row" onclick="quickSearch('U16')"><div class="park-pp">U16</div><div class="park-sep">→</div><div class="park-portes">Porte 30</div></div>
+  <div class="park-row" onclick="quickSearch('U17')"><div class="park-pp">U17</div><div class="park-sep">→</div><div class="park-portes">Portes 31 · 32</div></div>
+  <div class="park-row" onclick="quickSearch('U05')"><div class="park-pp">U05</div><div class="park-sep">→</div><div class="park-portes">Porte 20</div></div>
+  <div class="park-row" onclick="quickSearch('W04')"><div class="park-pp">W04</div><div class="park-sep">→</div><div class="park-portes">Porte 34</div></div>
+  <div class="park-row" onclick="quickSearch('W05')"><div class="park-pp">W05</div><div class="park-sep">→</div><div class="park-portes">Portes 35 · 36</div></div>
+  <div class="park-row" onclick="quickSearch('W06')"><div class="park-pp">W06</div><div class="park-sep">→</div><div class="park-portes">Porte 37</div></div>
+  <div class="park-row" onclick="quickSearch('W07')"><div class="park-pp">W07</div><div class="park-sep">→</div><div class="park-portes">Porte 38</div></div>
+</div></div>
+
+<!-- T1 SCHENGEN / SAT 5-6 -->
+<div class="park-section-title">TERMINAL 1 · SCHENGEN — SAT 5 · SAT 6</div>
+<div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
+  <div class="park-row" onclick="quickSearch('Y01')"><div class="park-pp">Y01</div><div class="park-sep">→</div><div class="park-portes">Portes 50 · 51</div></div>
+  <div class="park-row" onclick="quickSearch('Y02')"><div class="park-pp">Y02</div><div class="park-sep">→</div><div class="park-portes">Porte 52</div></div>
+  <div class="park-row" onclick="quickSearch('Y03')"><div class="park-pp">Y03</div><div class="park-sep">→</div><div class="park-portes">Porte 53</div></div>
+  <div class="park-row" onclick="quickSearch('Y04')"><div class="park-pp">Y04</div><div class="park-sep">→</div><div class="park-portes">Porte 54</div></div>
+  <div class="park-row" onclick="quickSearch('Y05')"><div class="park-pp">Y05</div><div class="park-sep">→</div><div class="park-portes">Porte 55</div></div>
+  <div class="park-row" onclick="quickSearch('Y06')"><div class="park-pp">Y06</div><div class="park-sep">→</div><div class="park-portes">Porte 56</div></div>
+  <div class="park-row" onclick="quickSearch('Y07')"><div class="park-pp">Y07</div><div class="park-sep">→</div><div class="park-portes">Porte 57</div></div>
+  <div class="park-row" onclick="quickSearch('X01')"><div class="park-pp">X01</div><div class="park-sep">→</div><div class="park-portes">Porte 61</div></div>
+  <div class="park-row" onclick="quickSearch('X02')"><div class="park-pp">X02</div><div class="park-sep">→</div><div class="park-portes">Porte 62</div></div>
+  <div class="park-row" onclick="quickSearch('X03')"><div class="park-pp">X03</div><div class="park-sep">→</div><div class="park-portes">Porte 63</div></div>
+  <div class="park-row" onclick="quickSearch('X04')"><div class="park-pp">X04</div><div class="park-sep">→</div><div class="park-portes">Porte 64</div></div>
+  <div class="park-row" onclick="quickSearch('X05')"><div class="park-pp">X05</div><div class="park-sep">→</div><div class="park-portes">Porte 65</div></div>
+  <div class="park-row" onclick="quickSearch('X06')"><div class="park-pp">X06</div><div class="park-sep">→</div><div class="park-portes">Porte 66</div></div>
+  <div class="park-row" onclick="quickSearch('X07')"><div class="park-pp">X07</div><div class="park-sep">→</div><div class="park-portes">Porte 67</div></div>
+  <div class="park-row" onclick="quickSearch('X08')"><div class="park-pp">X08</div><div class="park-sep">→</div><div class="park-portes">Porte 68</div></div>
+</div></div>
+
+<!-- T1 SAT 4 -->
+<div class="park-section-title">TERMINAL 1 · SATELLITE 4 — Arrivées Inter uniquement</div>
+<div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
+  <div class="park-row" onclick="quickSearch('Z01')"><div class="park-pp">Z01</div><div class="park-sep">→</div><div class="park-portes">Portes 40 · 41</div></div>
+  <div class="park-row" onclick="quickSearch('Z02')"><div class="park-pp">Z02</div><div class="park-sep">→</div><div class="park-portes">Porte 42</div></div>
+  <div class="park-row" onclick="quickSearch('Z03')"><div class="park-pp">Z03</div><div class="park-sep">→</div><div class="park-portes">Porte 43</div></div>
+  <div class="park-row" onclick="quickSearch('Z04')"><div class="park-pp">Z04</div><div class="park-sep">→</div><div class="park-portes">Porte 44</div></div>
+  <div class="park-row" onclick="quickSearch('Z05')"><div class="park-pp">Z05</div><div class="park-sep">→</div><div class="park-portes">Porte 45</div></div>
+  <div class="park-row" onclick="quickSearch('Z06')"><div class="park-pp">Z06</div><div class="park-sep">→</div><div class="park-portes">Porte 46</div></div>
+  <div class="park-row" onclick="quickSearch('Z09')"><div class="park-pp">Z09</div><div class="park-sep">→</div><div class="park-portes">Porte 47</div></div>
+  <div class="park-row" onclick="quickSearch('Z07')"><div class="park-pp">Z07</div><div class="park-sep">→</div><div class="park-portes">Porte 48</div></div>
+</div></div>
+
+<!-- T2 -->
+<!-- T2 SCHENGEN 2D -->
+<div class="park-section-title">TERMINAL 2 · 2D SCHENGEN</div>
+<div class="cards-led t2" style="margin-bottom:20px"><div class="park-table-wrap">
+  <div class="park-row" onclick="quickSearch('D20')"><div class="park-pp">D20 · D22 · D24</div><div class="park-sep">→</div><div class="park-portes">D50 · D51</div></div>
+  <div class="park-row" onclick="quickSearch('D18')"><div class="park-pp">D18</div><div class="park-sep">→</div><div class="park-portes">D52 · D53</div></div>
+  <div class="park-row" onclick="quickSearch('D16')"><div class="park-pp">D16</div><div class="park-sep">→</div><div class="park-portes">D54 · D55</div></div>
+  <div class="park-row" onclick="quickSearch('D14')"><div class="park-pp">D14</div><div class="park-sep">→</div><div class="park-portes">D56 · D57 · D65</div></div>
+  <div class="park-row" onclick="quickSearch('D8')"><div class="park-pp">D8 · D10 · D12</div><div class="park-sep">→</div><div class="park-portes">D66 · D67</div></div>
+  <div class="park-row" onclick="quickSearch('D2')"><div class="park-pp">D2 · D4 · D6</div><div class="park-sep">→</div><div class="park-portes">D68 · D69</div></div>
+</div></div>
+
+<!-- T2 INTERNATIONAL 2B -->
+<div class="park-section-title">TERMINAL 2 · 2B INTERNATIONAL</div>
+<div class="cards-led t2" style="margin-bottom:20px"><div class="park-table-wrap">
+  <div class="park-row" onclick="quickSearch('B2')"><div class="park-pp">B2 · B4 · B6</div><div class="park-sep">→</div><div class="park-portes">B30 · B31 · D40 · D41</div></div>
+  <div class="park-row" onclick="quickSearch('B8')"><div class="park-pp">B8 · B10 · B12</div><div class="park-sep">→</div><div class="park-portes">B28 · B29</div></div>
+  <div class="park-row" onclick="quickSearch('B14')"><div class="park-pp">B14</div><div class="park-sep">→</div><div class="park-portes">B26 · B27</div></div>
+  <div class="park-row" onclick="quickSearch('B16')"><div class="park-pp">B16</div><div class="park-sep">→</div><div class="park-portes">B24 · B25</div></div>
+  <div class="park-row" onclick="quickSearch('B18')"><div class="park-pp">B18</div><div class="park-sep">→</div><div class="park-portes">B22 · B23</div></div>
+  <div class="park-row" onclick="quickSearch('B20')"><div class="park-pp">B20</div><div class="park-sep">→</div><div class="park-portes">B20 · B21</div></div>
+</div></div>
+
+<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1px;text-align:center;padding:10px 0 0;line-height:2;">
+  ⚠ CNT B → à côté porte B12 · entre PP B14 et B18 · pancarte jaune 2B/2D<br>
+  ⚠ Large Inter T1 → passer les CAB en porte, salle large porte 19
+</div>
+```
+
+  </div>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+
+// ===== BASE DONNÉES PARKING =====
+const PARKINGS = {
+  // T1 INTER
+  'U06':{portes:'Porte 10',sat:'SAT 3 · Inter'},
+  'U07':{portes:'Porte 11',sat:'SAT 3 · Inter'},
+  'U09':{portes:'Porte 12',sat:'SAT 3 · Inter'},
+  'U10':{portes:'Porte 14',sat:'SAT 3 · Inter'},
+  'U11':{portes:'Portes 15 · 16',sat:'SAT 3 · Inter'},
+  'U12':{portes:'Porte 18',sat:'Jonction · Inter'},
+  'U05':{portes:'Porte 20',sat:'Jonction · Inter'},
+  'U13':{portes:'Porte 22',sat:'Jonction · Inter'},
+  'U04':{portes:'Porte 23',sat:'Jonction · Inter'},
+  'U03':{portes:'Porte 24',sat:'Jonction · Inter'},
+  'U14':{portes:'Porte 26',sat:'Jonction · Inter'},
+  'U15':{portes:'Porte 28',sat:'Jonction · Inter'},
+  'U16':{portes:'Porte 30',sat:'SAT 1 · Inter'},
+  'U17':{portes:'Portes 31 · 32',sat:'SAT 1 · Inter'},
+  'W04':{portes:'Porte 34',sat:'SAT 7 · Inter'},
+  'W05':{portes:'Portes 35 · 36',sat:'SAT 7 · Inter'},
+  'W06':{portes:'Porte 37',sat:'SAT 7 · Inter'},
+  'W07':{portes:'Porte 38',sat:'SAT 7 · Inter'},
+  // T1 SCHENGEN
+  'Y01':{portes:'Portes 50 · 51',sat:'SAT 5 · Schengen'},
+  'Y02':{portes:'Porte 52',sat:'SAT 5 · Schengen'},
+  'Y03':{portes:'Porte 53',sat:'SAT 5 · Schengen'},
+  'Y04':{portes:'Porte 54',sat:'SAT 5 · Schengen'},
+  'Y05':{portes:'Porte 55',sat:'SAT 5 · Schengen'},
+  'Y06':{portes:'Porte 56',sat:'SAT 5 · Schengen'},
+  'Y07':{portes:'Porte 57',sat:'SAT 5 · Schengen'},
+  'X01':{portes:'Porte 61',sat:'SAT 6 · Schengen'},
+  'X02':{portes:'Porte 62',sat:'SAT 6 · Schengen'},
+  'X03':{portes:'Porte 63',sat:'SAT 6 · Schengen'},
+  'X04':{portes:'Porte 64',sat:'SAT 6 · Schengen'},
+  'X05':{portes:'Porte 65',sat:'SAT 6 · Schengen'},
+  'X06':{portes:'Porte 66',sat:'SAT 6 · Schengen'},
+  'X07':{portes:'Porte 67',sat:'SAT 6 · Schengen'},
+  'X08':{portes:'Porte 68',sat:'SAT 6 · Schengen'},
+  // T1 SAT4 ARRIVEES
+  'Z01':{portes:'Portes 40 · 41',sat:'SAT 4 · Arrivées Inter'},
+  'Z02':{portes:'Porte 42',sat:'SAT 4 · Arrivées Inter'},
+  'Z03':{portes:'Porte 43',sat:'SAT 4 · Arrivées Inter'},
+  'Z04':{portes:'Porte 44',sat:'SAT 4 · Arrivées Inter'},
+  'Z05':{portes:'Porte 45',sat:'SAT 4 · Arrivées Inter'},
+  'Z06':{portes:'Porte 46',sat:'SAT 4 · Arrivées Inter'},
+  'Z09':{portes:'Porte 47',sat:'SAT 4 · Arrivées Inter'},
+  'Z07':{portes:'Porte 48',sat:'SAT 4 · Arrivées Inter'},
+  // T2 SCHENGEN (2D)
+  'D20':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
+  'D22':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
+  'D24':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
+  'D18':{portes:'Portes D52 · D53',sat:'T2 · 2D Schengen'},
+  'D16':{portes:'Portes D54 · D55',sat:'T2 · 2D Schengen'},
+  'D14':{portes:'Portes D56 · D57 · D65',sat:'T2 · 2D Schengen'},
+  'D8': {portes:'Portes D66 · D67',sat:'T2 · 2D Schengen'},
+  'D10':{portes:'Portes D66 · D67',sat:'T2 · 2D Schengen'},
+  'D12':{portes:'Portes D66 · D67',sat:'T2 · 2D Schengen'},
+  'D2': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
+  'D4': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
+  'D6': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
+  // T2 INTERNATIONAL (2B)
+  'B2': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
+  'B4': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
+  'B6': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
+  'B8': {portes:'Portes B28 · B29',sat:'T2 · 2B International'},
+  'B10':{portes:'Portes B28 · B29',sat:'T2 · 2B International'},
+  'B12':{portes:'Portes B28 · B29',sat:'T2 · 2B International'},
+  'B14':{portes:'Portes B26 · B27',sat:'T2 · 2B International'},
+  'B16':{portes:'Portes B24 · B25',sat:'T2 · 2B International'},
+  'B18':{portes:'Portes B22 · B23',sat:'T2 · 2B International'},
+  'B20':{portes:'Portes B20 · B21',sat:'T2 · 2B International'},
+};
+
+// Parkings avec obs
+const OBS = {
+  'U12':'⚠ Large Inter → salle large porte 19',
+  'U05':'Pas d\'ascenseur*',
+};
+
+function searchParking(val){
+  const q = val.trim().toUpperCase();
+  const res = document.getElementById('parkResult');
+  const noRes = document.getElementById('parkNoResult');
+  if(!q){ res.classList.remove('show'); noRes.classList.remove('show'); return; }
+  const data = PARKINGS[q];
+  if(data){
+    document.getElementById('prName').textContent = q;
+    document.getElementById('prPortes').textContent = data.portes;
+    document.getElementById('prSat').textContent = data.sat || '';
+    document.getElementById('prObs').textContent = OBS[q] || '';
+    res.classList.add('show');
+    noRes.classList.remove('show');
+  } else {
+    res.classList.remove('show');
+    noRes.classList.add('show');
+  }
+}
+
+function quickSearch(pp){
+  const input = document.querySelector('.park-search');
+  input.value = pp;
+  searchParking(pp);
+  input.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===== LAMP =====
+var lampDone=false,startY=null;
+function triggerLamp(){
+  if(lampDone) return; lampDone=true;
+  var hint=document.getElementById('lampHint');
+  hint.classList.add('pulled'); hint.textContent='.....';
+  var wire=document.getElementById('wire'),knob=document.getElementById('knob');
+  wire.style.height='calc(100% + 30px)'; knob.style.transform='translateY(30px)';
+  setTimeout(function(){
+    wire.style.height='100%'; knob.style.transform='none';
+    document.getElementById('lampshade').classList.add('on');
+    document.getElementById('bulb').classList.add('on');
+    document.getElementById('face').classList.add('on');
+    document.getElementById('spotlight').classList.add('on');
+  },300);
+  setTimeout(function(){
+    var lamp=document.getElementById('lampScreen');
+    lamp.classList.add('exiting');
+    setTimeout(function(){ lamp.style.display='none'; document.getElementById('lockScreen').style.display='flex'; },600);
+  },1800);
+}
+var wireWrap=document.getElementById('wireWrap');
+wireWrap.addEventListener('click',triggerLamp);
+wireWrap.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;},{passive:true});
+wireWrap.addEventListener('touchmove',function(e){if(startY===null)return;var dy=e.touches[0].clientY-startY;if(dy>30){startY=null;triggerLamp();}},{passive:true});
+wireWrap.addEventListener('touchend',function(){startY=null;});
+
+// ===== LOCK =====
+const SECRET='APMR';let input='',attempts=0,blocked=false;
+function pressKey(k){
+  if(blocked) return;
+  if(k==='⌫'){input=input.slice(0,-1);}else{if(input.length>=SECRET.length)return;input+=k;}
+  updateDisplay();
+  if(input.length===SECRET.length) setTimeout(checkCode,120);
+}
+function updateDisplay(){
+  for(let i=0;i<SECRET.length;i++){const el=document.getElementById('pc'+i);el.textContent=input[i]||'';el.classList.toggle('filled',!!input[i]);el.classList.remove('error');}
+}
+function checkCode(){
+  if(input===SECRET){attempts=0;document.getElementById('lockScreen').style.display='none';document.getElementById('mainApp').style.display='block';}
+  else{attempts++;for(let i=0;i<SECRET.length;i++)document.getElementById('pc'+i).classList.add('error');
+    if(attempts>=3){blocked=true;showScaryAlert();}
+    else{const left=3-attempts;document.getElementById('lockError').textContent='⚠ CODE INCORRECT · '+left+' ESSAI'+(left>1?'S':'')+' RESTANT';setTimeout(()=>{input='';updateDisplay();document.getElementById('lockError').textContent='';},900);}
+  }
+}
+function showScaryAlert(){
+  const overlay=document.getElementById('scaryOverlay');overlay.style.display='flex';
+  let secs=30;document.getElementById('scaryCountdown').textContent=secs;
+  const iv=setInterval(()=>{secs--;document.getElementById('scaryCountdown').textContent=secs;if(secs<=0){clearInterval(iv);overlay.style.display='none';blocked=false;attempts=0;input='';updateDisplay();document.getElementById('lockError').textContent='';}},1000);
+}
+function logout(){input='';updateDisplay();document.getElementById('mainApp').style.display='none';document.getElementById('lockScreen').style.display='flex';goHome();}
+
+// ===== NAV =====
+const timers=new WeakMap();let toastTimer;
+function goTerminal(t){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+t).classList.add('active');
+  document.getElementById('backBtn').style.display='block';
+  const labels={t1:'TERMINAL 1',t2:'TERMINAL 2',t3:'TERMINAL 3',tp:'PARKINGS → PORTES'};
+  document.getElementById('headerTitle').textContent='✈ '+labels[t];
+  if(t!=='tp') document.querySelectorAll('#screen-'+t+' .card-code').forEach(c=>{c.dataset.hidden='true';c.closest('.card').querySelector('.card-hint').style.display='';});
+  if(t==='tp'){document.querySelector('.park-search').value='';searchParking('');}
+}
+function goHome(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-home').classList.add('active');
+  document.getElementById('backBtn').style.display='none';
+  document.getElementById('headerTitle').textContent="✈ Codes d'accès";
+}
+function reveal(card){
+  const code=card.querySelector('.card-code'),hint=card.querySelector('.card-hint');
+  if(code.dataset.hidden==='true'){
+    code.dataset.hidden='false';hint.style.display='none';
+    clearTimeout(timers.get(card));
+    timers.set(card,setTimeout(()=>{code.dataset.hidden='true';hint.style.display='';},5000));
+  } else {
+    navigator.clipboard.writeText(code.dataset.code).catch(()=>{});
+    code.classList.add('flash');setTimeout(()=>code.classList.remove('flash'),400);
+    showToast('✓  '+code.dataset.code+'  COPIÉ');
+  }
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
+</script>
+
+</body>
+</html>
