@@ -13,13 +13,14 @@
 <title>Codes d'accès & ponits de parkings</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Barlow+Condensed:wght@300;400;700;800&display=swap');
 
 :root {
   --bg:#0a0f1e; --surface:#111827; --border:#1f2937;
   --text:#e2e8f0; --muted:#4b5563;
   --c1:#3b82f6; --c2:#8b5cf6; --c3:#10b981;
-  --c4:#f59e0b; /* parking = ambre */
+  --c4:#f59e0b;
+  --c5:#06b6d4;
   --red:#ef4444;
 }
 
@@ -30,49 +31,105 @@ body::before{content:'';position:fixed;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
   pointer-events:none;z-index:0;}
 
-/* ===== LAMP ===== */
-#lampScreen{position:fixed;inset:0;z-index:300;background:#000;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden;
-  transition:opacity .6s ease;}
+/* ===== INTRO APMR ===== */
+#lampScreen{position:fixed;inset:0;z-index:300;background:#0c1018;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  cursor:pointer;transition:opacity .7s ease;}
 #lampScreen.exiting{opacity:0;pointer-events:none;}
 
-.spotlight{position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:0;height:0;border-left:140px solid transparent;border-right:140px solid transparent;
-  border-top:260px solid rgba(255,220,80,.08);opacity:0;transition:opacity .6s;pointer-events:none;}
-.spotlight.on{opacity:1;}
+.intro-grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(90,172,218,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(90,172,218,.06) 1px,transparent 1px);
+  background-size:36px 36px;animation:introGridDrift 30s linear infinite;}
+@keyframes introGridDrift{from{background-position:0 0;}to{background-position:36px 36px;}}
 
-.wire-wrap{position:relative;width:40px;height:160px;margin-top:0;cursor:pointer;z-index:10;
-  display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;}
-.wire{width:2px;background:linear-gradient(to bottom,#555,#888);border-radius:2px;
-  transform-origin:top center;transition:height .15s;height:100%;}
-.knob{width:16px;height:16px;background:radial-gradient(circle at 40% 35%,#d4a847,#8b6914);
-  border-radius:50%;border:2px solid #a07830;box-shadow:0 2px 6px rgba(0,0,0,.5);
-  margin-top:4px;transition:transform .15s;flex-shrink:0;}
+#introCanvas{position:absolute;inset:0;pointer-events:none;}
 
-.lamp-wrap{display:flex;flex-direction:column;align-items:center;position:relative;z-index:5;}
-.lamp-pole{width:6px;height:60px;background:linear-gradient(to bottom,#444,#333);border-radius:3px;}
-.lampshade{width:0;height:0;border-left:55px solid transparent;border-right:55px solid transparent;
-  border-top:70px solid #2a2a2a;position:relative;transition:filter .4s,border-top-color .4s;
-  filter:drop-shadow(0 0 0px transparent);}
-.lampshade::before{content:'';position:absolute;top:-70px;left:-55px;width:110px;height:70px;
-  background:linear-gradient(to bottom,#3a3a3a,#222);clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);}
-.lampshade::after{content:'';position:absolute;top:-68px;left:-53px;width:106px;height:4px;
-  background:rgba(255,255,255,.07);clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);}
-.lampshade.on{border-top-color:#8b6914;
-  filter:drop-shadow(0 0 30px rgba(255,200,50,.7)) drop-shadow(0 10px 40px rgba(255,180,30,.4));}
-.bulb{position:absolute;top:-52px;left:50%;transform:translateX(-50%);width:28px;height:32px;
-  background:radial-gradient(circle at 50% 40%,#fff5c0,#ffe066,#cc9900);border-radius:50% 50% 40% 40%;
-  opacity:0;transition:opacity .4s,box-shadow .4s;box-shadow:0 0 0px transparent;}
-.bulb.on{opacity:1;box-shadow:0 0 20px 8px rgba(255,220,60,.6),0 0 60px 20px rgba(255,180,30,.3);}
-.face{position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:28px;height:28px;
-  display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:20;font-size:22px;}
-.face.on{opacity:1;}
-.lamp-base{width:70px;height:12px;background:linear-gradient(to bottom,#444,#2a2a2a);border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.5);}
-.lamp-hint{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:#333;margin-top:30px;transition:color .4s;text-transform:uppercase;}
-.lamp-hint.pulled{color:#666;}
-.lamp-floor{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,#111,transparent);}
+.intro-tap-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;
+  color:rgba(90,172,218,.35);text-transform:uppercase;white-space:nowrap;
+  opacity:0;animation:introFadeIn .6s ease 3.2s forwards;}
 
-/* ===== LOCK ===== */
+.intro-stage{position:relative;width:320px;height:320px;
+  display:flex;align-items:center;justify-content:center;}
+
+/* Rings */
+.intro-ring-sys{position:absolute;inset:0;pointer-events:none;}
+.intro-ring-sys svg{width:100%;height:100%;overflow:visible;}
+.ir1{animation:iRotCW 18s linear infinite;transform-origin:160px 160px;}
+.ir2{animation:iRotCCW 12s linear infinite;transform-origin:160px 160px;}
+.ir3{animation:iRotCW 25s linear infinite;transform-origin:160px 160px;}
+@keyframes iRotCW{to{transform:rotate(360deg);}}
+@keyframes iRotCCW{to{transform:rotate(-360deg);}}
+.iblip{animation:iBlipBlink 1.2s ease-in-out infinite;}
+.iblip:nth-child(2){animation-delay:.4s;}
+.iblip:nth-child(3){animation-delay:.8s;}
+@keyframes iBlipBlink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* HUD lines */
+.intro-hud-lines{position:absolute;inset:0;pointer-events:none;}
+.intro-hud-lines svg{width:100%;height:100%;overflow:visible;}
+.ihud-line{stroke-dasharray:200;stroke-dashoffset:200;animation:iLineDraw .6s ease forwards;}
+.ihud-line:nth-child(1){animation-delay:2.0s;}
+.ihud-line:nth-child(2){animation-delay:2.1s;}
+.ihud-line:nth-child(3){animation-delay:2.2s;}
+.ihud-line:nth-child(4){animation-delay:2.3s;}
+@keyframes iLineDraw{to{stroke-dashoffset:0;}}
+
+/* HUD labels */
+.ihud-label{position:absolute;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;
+  color:rgba(90,172,218,.6);text-transform:uppercase;line-height:1.6;opacity:0;
+  animation:introFadeIn .4s ease forwards;white-space:nowrap;border:1px solid rgba(90,172,218,.2);
+  padding:3px 6px;background:rgba(90,172,218,.04);}
+@keyframes introFadeIn{to{opacity:1;}}
+.ihud-tl{top:20px;left:0;animation-delay:2.4s;text-align:right;}
+.ihud-tr{top:20px;right:0;animation-delay:2.5s;}
+.ihud-bl{bottom:20px;left:0;animation-delay:2.6s;text-align:right;}
+.ihud-br{bottom:20px;right:0;animation-delay:2.7s;}
+
+/* Logo block */
+.intro-logo{position:relative;width:180px;animation:iLogoReveal 1s cubic-bezier(.22,1,.36,1) .5s both;}
+@keyframes iLogoReveal{from{opacity:0;transform:scale(.7) rotate(-8deg);}to{opacity:1;transform:scale(1) rotate(0deg);}}
+
+.intro-logo-top{background:#2b3445;border-radius:12px 12px 0 0;padding:20px 20px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.intro-logo-top::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(-45deg,transparent 0px,transparent 18px,rgba(255,255,255,.015) 18px,rgba(255,255,255,.015) 19px);
+  pointer-events:none;}
+.intro-logo-top::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:120px;height:60px;background:radial-gradient(ellipse,rgba(90,172,218,.18),transparent 70%);pointer-events:none;}
+
+.intro-s-svg{width:80px;height:80px;overflow:visible;
+  filter:drop-shadow(0 0 14px rgba(255,255,255,.1));
+  animation:iSPulse 5s ease-in-out infinite;}
+@keyframes iSPulse{0%,100%{filter:drop-shadow(0 0 14px rgba(255,255,255,.1));}50%{filter:drop-shadow(0 0 30px rgba(255,255,255,.22)) drop-shadow(0 0 60px rgba(90,172,218,.15));}}
+.is-outline{stroke-dasharray:700;stroke-dashoffset:700;animation:iDrawS 1.4s ease .6s forwards;}
+@keyframes iDrawS{to{stroke-dashoffset:0;}}
+.is-body{opacity:0;animation:introFadeIn .5s ease 1.2s forwards;}
+.is-shine{animation:iShineWipe 5s ease-in-out infinite 2s;}
+@keyframes iShineWipe{0%{transform:translateX(-60px);opacity:0;}15%{opacity:.6;}85%{opacity:.6;}100%{transform:translateX(120px);opacity:0;}}
+
+.intro-samsic{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:13px;
+  letter-spacing:7px;color:rgba(255,255,255,.85);text-transform:uppercase;
+  opacity:0;animation:isFadeUp .6s ease 1.5s forwards;}
+@keyframes isFadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.intro-logo-bottom{background:#5aacda;border-radius:0 0 12px 12px;padding:10px 20px 12px;
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.intro-logo-bottom::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,.3);}
+.intro-logo-bottom::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);
+  transform:translateX(-100%);animation:iBarShine 4s ease-in-out infinite 2s;}
+@keyframes iBarShine{0%{transform:translateX(-100%);}100%{transform:translateX(200%);}}
+
+.intro-apmr{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:34px;
+  letter-spacing:6px;color:#fff;display:flex;gap:0;}
+.intro-apmr span{display:inline-block;opacity:0;animation:iLetterPop .45s cubic-bezier(.34,1.56,.64,1) forwards;}
+.intro-apmr span:nth-child(1){animation-delay:1.6s;}
+.intro-apmr span:nth-child(2){animation-delay:1.75s;}
+.intro-apmr span:nth-child(3){animation-delay:1.9s;}
+.intro-apmr span:nth-child(4){animation-delay:2.05s;}
+@keyframes iLetterPop{from{opacity:0;transform:scale(.5) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
 #lockScreen{position:fixed;inset:0;z-index:100;background:var(--bg);
   display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;}
 .lock-logo{font-size:48px;margin-bottom:10px;animation:floatLogo 3s ease-in-out infinite;}
@@ -97,7 +154,6 @@ body::before{content:'';position:fixed;inset:0;
 .key.empty{visibility:hidden;cursor:default;}
 .lock-error{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);letter-spacing:2px;margin-top:16px;height:16px;}
 
-/* ===== APP ===== */
 .app{position:relative;z-index:1;min-height:100vh;}
 header{background:#111827;border-bottom:1px solid #1f2937;padding:16px 20px;text-align:center;
   position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;gap:12px;}
@@ -113,7 +169,6 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .screen{display:none;padding:24px 16px 50px;}
 .screen.active{display:block;}
 
-/* LED blocks */
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
 @keyframes rotateLED{to{--angle:360deg;}}
 
@@ -129,6 +184,7 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .t2{--c-a:#8b5cf6;--c-b:#ec4899;}
 .t3{--c-a:#10b981;--c-b:#3b82f6;}
 .tp{--c-a:#f59e0b;--c-b:#ef4444;}
+.tt{--c-a:#06b6d4;--c-b:#3b82f6;}
 
 .terminal-select-inner{background:var(--surface);border-radius:16px;padding:24px 20px;display:flex;align-items:center;justify-content:space-between;}
 .ts-left{display:flex;align-items:center;gap:14px;}
@@ -137,18 +193,19 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .t2 .led-dot{background:var(--c2);box-shadow:0 0 10px var(--c2);}
 .t3 .led-dot{background:var(--c3);box-shadow:0 0 10px var(--c3);}
 .tp .led-dot{background:var(--c4);box-shadow:0 0 10px var(--c4);}
+.tt .led-dot{background:var(--c5);box-shadow:0 0 10px var(--c5);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .ts-label{font-family:'Share Tech Mono',monospace;font-size:16px;letter-spacing:3px;text-transform:uppercase;}
 .t1 .ts-label{color:var(--c1);text-shadow:0 0 12px var(--c1);}
 .t2 .ts-label{color:var(--c2);text-shadow:0 0 12px var(--c2);}
 .t3 .ts-label{color:var(--c3);text-shadow:0 0 12px var(--c3);}
 .tp .ts-label{color:var(--c4);text-shadow:0 0 12px var(--c4);}
+.tt .ts-label{color:var(--c5);text-shadow:0 0 12px var(--c5);}
 .ts-count{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:4px;}
 .ts-arrow{font-size:20px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
 
-/* Locaux */
 .screen-title{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.t1-color{color:var(--c1);} .t2-color{color:var(--c2);} .t3-color{color:var(--c3);} .tp-color{color:var(--c4);}
+.t1-color{color:var(--c1);}.t2-color{color:var(--c2);}.t3-color{color:var(--c3);}.tp-color{color:var(--c4);}.tt-color{color:var(--c5);}
 
 .cards-led{position:relative;border-radius:18px;padding:2px;
   background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));animation:rotateLED 3s linear infinite;}
@@ -172,7 +229,6 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 @keyframes flashCopy{0%,100%{opacity:1}40%{opacity:.15}}
 .flash{animation:flashCopy .4s ease;}
 
-/* ===== PARKING SCREEN ===== */
 .park-search-wrap{position:relative;margin-bottom:20px;}
 .park-search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:12px 16px 12px 42px;font-family:'Share Tech Mono',monospace;font-size:15px;
@@ -181,15 +237,8 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .park-search::placeholder{color:var(--muted);text-transform:none;letter-spacing:1px;}
 .search-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
 
-/* Résultat de recherche */
-.park-result{
-  display:none;
-  background:var(--surface);border-radius:16px;
-  border:2px solid var(--c4);
-  box-shadow:0 0 24px rgba(245,158,11,.2);
-  padding:20px;margin-bottom:20px;
-  text-align:center;
-}
+.park-result{display:none;background:var(--surface);border-radius:16px;border:2px solid var(--c4);
+  box-shadow:0 0 24px rgba(245,158,11,.2);padding:20px;margin-bottom:20px;text-align:center;}
 .park-result.show{display:block;}
 .park-result-pp{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;}
 .park-result-name{font-family:'Share Tech Mono',monospace;font-size:28px;font-weight:700;color:var(--c4);text-shadow:0 0 16px var(--c4);letter-spacing:4px;margin-bottom:16px;}
@@ -201,7 +250,6 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .park-no-result{display:none;text-align:center;padding:20px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:2px;}
 .park-no-result.show{display:block;}
 
-/* Liste complète parkings */
 .park-section-title{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
 .park-table-wrap{background:var(--surface);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
 .park-row{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px solid var(--border);gap:12px;cursor:pointer;transition:background .15s;-webkit-user-select:none;user-select:none;}
@@ -210,8 +258,15 @@ header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mute
 .park-pp{font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700;color:var(--c4);text-shadow:0 0 8px var(--c4);min-width:52px;}
 .park-sep{color:var(--muted);font-size:12px;}
 .park-portes{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text);flex:1;}
-.park-obs-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:4px;background:rgba(239,68,68,.15);color:var(--red);white-space:nowrap;}
-.park-sat-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:4px;background:rgba(245,158,11,.12);color:var(--c4);white-space:nowrap;}
+
+/* ===== TRANSIT ROWS ===== */
+.transit-row{display:flex;align-items:center;padding:0 20px;height:72px;border-bottom:1px solid var(--border);gap:16px;}
+.transit-row:last-child{border-bottom:none;}
+.transit-porte{font-family:'Share Tech Mono',monospace;font-size:26px;font-weight:700;color:var(--c5);text-shadow:0 0 14px var(--c5),0 0 28px rgba(6,182,212,.3);min-width:32px;text-align:center;}
+.transit-sep{color:var(--muted);font-size:20px;flex-shrink:0;}
+.transit-info{display:flex;flex-direction:column;gap:4px;flex:1;}
+.transit-module{font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;color:var(--text);letter-spacing:3px;}
+.transit-terminal{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
 
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
   background:#e2e8f0;color:#0a0f1e;font-family:'Share Tech Mono',monospace;font-size:13px;
@@ -226,25 +281,94 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
 </head>
 <body>
 
-<!-- LAMP -->
+<!-- INTRO APMR -->
 
 <div id="lampScreen">
-  <div class="spotlight" id="spotlight"></div>
-  <div class="lamp-wrap">
-    <div class="wire-wrap" id="wireWrap">
-      <div class="wire" id="wire"></div>
-      <div class="knob" id="knob"></div>
-    </div>
-    <div style="position:relative">
-      <div class="lampshade" id="lampshade">
-        <div class="bulb" id="bulb"></div>
-        <div class="face" id="face">😊</div>
-      </div>
-    </div>
-    <div class="lamp-base"></div>
+  <div class="intro-grid-bg"></div>
+  <canvas id="introCanvas"></canvas>
+
+  <div class="intro-stage">
+
+```
+<!-- Rings -->
+<div class="intro-ring-sys">
+  <svg viewBox="0 0 320 320">
+    <defs>
+      <filter id="iglow">
+        <feGaussianBlur stdDeviation="2.5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g class="ir1">
+      <circle cx="160" cy="160" r="148" stroke="#5aacda" stroke-width="1" stroke-dasharray="12 8" fill="none" opacity=".2"/>
+      <circle class="iblip" cx="160" cy="12" r="3.5" fill="#5aacda" filter="url(#iglow)" opacity=".8"/>
+    </g>
+    <g class="ir2">
+      <circle cx="160" cy="160" r="120" stroke="#5aacda" stroke-width=".7" stroke-dasharray="4 12" fill="none" opacity=".15"/>
+      <circle class="iblip" cx="160" cy="40" r="2.5" fill="#5aacda" filter="url(#iglow)" opacity=".6"/>
+      <circle class="iblip" cx="280" cy="160" r="2.5" fill="#5aacda" filter="url(#iglow)" opacity=".6"/>
+    </g>
+    <g class="ir3">
+      <circle cx="160" cy="160" r="95" stroke="rgba(90,172,218,.12)" stroke-width=".5" fill="none"/>
+    </g>
+    <line x1="160" y1="10" x2="160" y2="310" stroke="rgba(90,172,218,.06)" stroke-width="1"/>
+    <line x1="10" y1="160" x2="310" y2="160" stroke="rgba(90,172,218,.06)" stroke-width="1"/>
+    <line x1="55" y1="55" x2="265" y2="265" stroke="rgba(90,172,218,.04)" stroke-width="1"/>
+    <line x1="265" y1="55" x2="55" y2="265" stroke="rgba(90,172,218,.04)" stroke-width="1"/>
+  </svg>
+</div>
+
+<!-- HUD lines -->
+<div class="intro-hud-lines">
+  <svg viewBox="0 0 320 320">
+    <polyline class="ihud-line" points="82,92 50,60 20,60" stroke="#5aacda" stroke-width=".8" fill="none" opacity=".5"/>
+    <polyline class="ihud-line" points="238,92 270,60 300,60" stroke="#5aacda" stroke-width=".8" fill="none" opacity=".5"/>
+    <polyline class="ihud-line" points="82,228 50,260 20,260" stroke="#5aacda" stroke-width=".8" fill="none" opacity=".5"/>
+    <polyline class="ihud-line" points="238,228 270,260 300,260" stroke="#5aacda" stroke-width=".8" fill="none" opacity=".5"/>
+  </svg>
+</div>
+
+<!-- HUD labels -->
+<div class="ihud-label ihud-tl">Service personnalisé<br>Accompagnement dédié</div>
+<div class="ihud-label ihud-tr">Accompagnement pro<br>Du départ à l'arrivée</div>
+<div class="ihud-label ihud-bl">Agents formés<br>Matériel adapté</div>
+<div class="ihud-label ihud-br">Confort & dignité<br>Pour chaque passager</div>
+
+<!-- Logo APMR -->
+<div class="intro-logo">
+  <div class="intro-logo-top">
+    <svg class="intro-s-svg" viewBox="0 0 120 120" fill="none">
+      <defs>
+        <clipPath id="isc"><rect width="120" height="120"/></clipPath>
+        <linearGradient id="isg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="white" stop-opacity="0"/>
+          <stop offset="50%" stop-color="white" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="white" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g class="is-body">
+        <path d="M 90 27 C 90 17, 77 12, 60 12 C 43 12, 28 17, 28 30 C 28 43, 40 49, 60 53 C 75 56, 82 59, 82 65 C 82 71, 74 74, 60 74 C 46 74, 38 71, 38 65 L 28 65 C 28 76, 42 82, 60 82 C 78 82, 92 76, 92 65 C 92 52, 80 46, 60 42 C 45 39, 38 36, 38 30 C 38 24, 46 21, 60 21 C 74 21, 82 24, 82 30 Z" fill="white"/>
+        <path d="M 75 28 C 75 23, 68 20, 60 20 C 52 20, 45 23, 45 28 C 45 33, 52 37, 60 39 C 68 41, 75 44, 76 50 L 82 50 C 82 42, 74 37, 60 35 C 52 33, 51 29, 60 28 C 66 28, 69 30, 70 33 Z" fill="#2b3445"/>
+        <path d="M 45 66 C 45 71, 52 74, 60 74 C 68 74, 75 71, 75 66 C 75 61, 68 58, 60 56 C 52 54, 44 50, 44 44 L 38 44 C 38 52, 46 57, 60 59 C 68 61, 69 65, 60 66 C 54 66, 51 64, 50 61 Z" fill="#2b3445"/>
+      </g>
+      <path class="is-outline" d="M 90 27 C 90 17, 77 12, 60 12 C 43 12, 28 17, 28 30 C 28 43, 40 49, 60 53 C 75 56, 82 59, 82 65 C 82 71, 74 74, 60 74 C 46 74, 38 71, 38 65 L 28 65 C 28 76, 42 82, 60 82 C 78 82, 92 76, 92 65 C 92 52, 80 46, 60 42 C 45 39, 38 36, 38 30 C 38 24, 46 21, 60 21 C 74 21, 82 24, 82 30 Z" stroke="white" stroke-width="2.5" fill="none"/>
+      <g class="is-shine" clip-path="url(#isc)">
+        <rect x="-25" y="0" width="50" height="120" fill="url(#isg)"/>
+      </g>
+    </svg>
+    <p class="intro-samsic">Samsic</p>
   </div>
-  <div class="lamp-hint" id="lampHint">TIRER LE FIL</div>
-  <div class="lamp-floor"></div>
+  <div class="intro-logo-bottom">
+    <div class="intro-apmr">
+      <span>A</span><span>P</span><span>M</span><span>R</span>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="intro-tap-hint">APPUYER POUR CONTINUER</div>
 </div>
 
 <!-- LOCK -->
@@ -293,8 +417,8 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <header>
     <button class="back-btn" id="backBtn" onclick="goHome()">←</button>
     <div>
-      <h1 id="headerTitle">✈ Codes d'accès</h1>
-      <p id="headerSub">SAMSIC AIRPORT · CDG</p>
+      <h1 id="headerTitle">✈ Codes d'accès & Points De Parkings</h1>
+      <p id="headerSub">SAMSIC APMR · CDG</p>
     </div>
     <button class="logout-btn" onclick="logout()">🔒</button>
   </header>
@@ -326,7 +450,13 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
         <div class="ts-arrow">›</div>
       </div>
     </div>
-    <footer>CRÉÉ PAR LEBKIRI · v4.0</footer>
+    <div class="terminal-select-block tt" onclick="goTerminal('tt')">
+      <div class="terminal-select-inner">
+        <div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">🛤 Transits piste</div><div class="ts-count">Porte → Module · 4 liaisons</div></div></div>
+        <div class="ts-arrow">›</div>
+      </div>
+    </div>
+    <footer>CRÉÉ PAR LEBKIRI · v4.1</footer>
   </div>
 
   <!-- T1 -->
@@ -370,7 +500,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
     <div class="screen-title tp-color">▸ 🅿 POINTS PARKINGS → PORTES</div>
 
 ```
-<!-- SEARCH -->
 <div class="park-search-wrap">
   <span class="search-ico">🔍</span>
   <input class="park-search" type="text" placeholder="Tape un parking ex: U06, B18, Y03…" oninput="searchParking(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -387,7 +516,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
 </div>
 <div class="park-no-result" id="parkNoResult">PARKING INTROUVABLE</div>
 
-<!-- T1 INTER / SAT 3 -->
 <div class="park-section-title">TERMINAL 1 · INTER — SAT 3 · JONCTION · SAT 1 · SAT 7</div>
 <div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
   <div class="park-row" onclick="quickSearch('U06')"><div class="park-pp">U06</div><div class="park-sep">→</div><div class="park-portes">Porte 10</div></div>
@@ -410,7 +538,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <div class="park-row" onclick="quickSearch('W07')"><div class="park-pp">W07</div><div class="park-sep">→</div><div class="park-portes">Porte 38</div></div>
 </div></div>
 
-<!-- T1 SCHENGEN / SAT 5-6 -->
 <div class="park-section-title">TERMINAL 1 · SCHENGEN — SAT 5 · SAT 6</div>
 <div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
   <div class="park-row" onclick="quickSearch('Y01')"><div class="park-pp">Y01</div><div class="park-sep">→</div><div class="park-portes">Portes 50 · 51</div></div>
@@ -430,7 +557,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <div class="park-row" onclick="quickSearch('X08')"><div class="park-pp">X08</div><div class="park-sep">→</div><div class="park-portes">Porte 68</div></div>
 </div></div>
 
-<!-- T1 SAT 4 -->
 <div class="park-section-title">TERMINAL 1 · SATELLITE 4 — Arrivées Inter uniquement</div>
 <div class="cards-led t1" style="margin-bottom:20px"><div class="park-table-wrap">
   <div class="park-row" onclick="quickSearch('Z01')"><div class="park-pp">Z01</div><div class="park-sep">→</div><div class="park-portes">Portes 40 · 41</div></div>
@@ -443,8 +569,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <div class="park-row" onclick="quickSearch('Z07')"><div class="park-pp">Z07</div><div class="park-sep">→</div><div class="park-portes">Porte 48</div></div>
 </div></div>
 
-<!-- T2 -->
-<!-- T2 SCHENGEN 2D -->
 <div class="park-section-title">TERMINAL 2 · 2D SCHENGEN</div>
 <div class="cards-led t2" style="margin-bottom:20px"><div class="park-table-wrap">
   <div class="park-row" onclick="quickSearch('D20')"><div class="park-pp">D20 · D22 · D24</div><div class="park-sep">→</div><div class="park-portes">D50 · D51</div></div>
@@ -455,7 +579,6 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <div class="park-row" onclick="quickSearch('D2')"><div class="park-pp">D2 · D4 · D6</div><div class="park-sep">→</div><div class="park-portes">D68 · D69</div></div>
 </div></div>
 
-<!-- T2 INTERNATIONAL 2B -->
 <div class="park-section-title">TERMINAL 2 · 2B INTERNATIONAL</div>
 <div class="cards-led t2" style="margin-bottom:20px"><div class="park-table-wrap">
   <div class="park-row" onclick="quickSearch('B2')"><div class="park-pp">B2 · B4 · B6</div><div class="park-sep">→</div><div class="park-portes">B30 · B31 · D40 · D41</div></div>
@@ -474,6 +597,51 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
 
   </div>
 
+  <!-- TRANSITS PISTE -->
+
+  <div class="screen" id="screen-tt">
+    <div class="screen-title tt-color">▸ 🛤 TRANSITS PAR PISTE</div>
+    <div class="cards-led tt" style="margin-bottom:20px">
+      <div class="park-table-wrap">
+        <div class="transit-row">
+          <div class="transit-porte">F</div>
+          <div class="transit-sep">→</div>
+          <div class="transit-info">
+            <div class="transit-module">Module P</div>
+            <div class="transit-terminal">Terminal 2F</div>
+          </div>
+        </div>
+        <div class="transit-row">
+          <div class="transit-porte">K</div>
+          <div class="transit-sep">→</div>
+          <div class="transit-info">
+            <div class="transit-module">E26</div>
+            <div class="transit-terminal">Terminal 2E</div>
+          </div>
+        </div>
+        <div class="transit-row">
+          <div class="transit-porte">L</div>
+          <div class="transit-sep">→</div>
+          <div class="transit-info">
+            <div class="transit-module">F15</div>
+            <div class="transit-terminal">Terminal S3</div>
+          </div>
+        </div>
+        <div class="transit-row">
+          <div class="transit-porte">M</div>
+          <div class="transit-sep">→</div>
+          <div class="transit-info">
+            <div class="transit-module">M23</div>
+            <div class="transit-terminal">Terminal S4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-align:center;padding:6px 0 0;line-height:2.2;">
+      🛤 TRANSIT PAR PISTE · ACCÈS CÔTÉ PISTE · VÉHICULE
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <div class="toast" id="toast"></div>
@@ -483,9 +651,7 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
 
-// ===== BASE DONNÉES PARKING =====
 const PARKINGS = {
-  // T1 INTER
   'U06':{portes:'Porte 10',sat:'SAT 3 · Inter'},
   'U07':{portes:'Porte 11',sat:'SAT 3 · Inter'},
   'U09':{portes:'Porte 12',sat:'SAT 3 · Inter'},
@@ -504,7 +670,6 @@ const PARKINGS = {
   'W05':{portes:'Portes 35 · 36',sat:'SAT 7 · Inter'},
   'W06':{portes:'Porte 37',sat:'SAT 7 · Inter'},
   'W07':{portes:'Porte 38',sat:'SAT 7 · Inter'},
-  // T1 SCHENGEN
   'Y01':{portes:'Portes 50 · 51',sat:'SAT 5 · Schengen'},
   'Y02':{portes:'Porte 52',sat:'SAT 5 · Schengen'},
   'Y03':{portes:'Porte 53',sat:'SAT 5 · Schengen'},
@@ -520,7 +685,6 @@ const PARKINGS = {
   'X06':{portes:'Porte 66',sat:'SAT 6 · Schengen'},
   'X07':{portes:'Porte 67',sat:'SAT 6 · Schengen'},
   'X08':{portes:'Porte 68',sat:'SAT 6 · Schengen'},
-  // T1 SAT4 ARRIVEES
   'Z01':{portes:'Portes 40 · 41',sat:'SAT 4 · Arrivées Inter'},
   'Z02':{portes:'Porte 42',sat:'SAT 4 · Arrivées Inter'},
   'Z03':{portes:'Porte 43',sat:'SAT 4 · Arrivées Inter'},
@@ -529,7 +693,6 @@ const PARKINGS = {
   'Z06':{portes:'Porte 46',sat:'SAT 4 · Arrivées Inter'},
   'Z09':{portes:'Porte 47',sat:'SAT 4 · Arrivées Inter'},
   'Z07':{portes:'Porte 48',sat:'SAT 4 · Arrivées Inter'},
-  // T2 SCHENGEN (2D)
   'D20':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
   'D22':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
   'D24':{portes:'Portes D50 · D51',sat:'T2 · 2D Schengen'},
@@ -542,7 +705,6 @@ const PARKINGS = {
   'D2': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
   'D4': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
   'D6': {portes:'Portes D68 · D69',sat:'T2 · 2D Schengen'},
-  // T2 INTERNATIONAL (2B)
   'B2': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
   'B4': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
   'B6': {portes:'Portes B30 · B31 · D40 · D41',sat:'T2 · 2B International'},
@@ -555,72 +717,76 @@ const PARKINGS = {
   'B20':{portes:'Portes B20 · B21',sat:'T2 · 2B International'},
 };
 
-// Parkings avec obs
 const OBS = {
   'U12':'⚠ Large Inter → salle large porte 19',
   'U05':'Pas d\'ascenseur*',
 };
 
 function searchParking(val){
-  const q = val.trim().toUpperCase();
-  const res = document.getElementById('parkResult');
-  const noRes = document.getElementById('parkNoResult');
-  if(!q){ res.classList.remove('show'); noRes.classList.remove('show'); return; }
-  const data = PARKINGS[q];
+  const q=val.trim().toUpperCase();
+  const res=document.getElementById('parkResult');
+  const noRes=document.getElementById('parkNoResult');
+  if(!q){res.classList.remove('show');noRes.classList.remove('show');return;}
+  const data=PARKINGS[q];
   if(data){
-    document.getElementById('prName').textContent = q;
-    document.getElementById('prPortes').textContent = data.portes;
-    document.getElementById('prSat').textContent = data.sat || '';
-    document.getElementById('prObs').textContent = OBS[q] || '';
-    res.classList.add('show');
-    noRes.classList.remove('show');
-  } else {
-    res.classList.remove('show');
-    noRes.classList.add('show');
-  }
+    document.getElementById('prName').textContent=q;
+    document.getElementById('prPortes').textContent=data.portes;
+    document.getElementById('prSat').textContent=data.sat||'';
+    document.getElementById('prObs').textContent=OBS[q]||'';
+    res.classList.add('show');noRes.classList.remove('show');
+  }else{res.classList.remove('show');noRes.classList.add('show');}
 }
 
 function quickSearch(pp){
-  const input = document.querySelector('.park-search');
-  input.value = pp;
-  searchParking(pp);
+  const input=document.querySelector('.park-search');
+  input.value=pp;searchParking(pp);
   input.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ===== LAMP =====
-var lampDone=false,startY=null;
-function triggerLamp(){
-  if(lampDone) return; lampDone=true;
-  var hint=document.getElementById('lampHint');
-  hint.classList.add('pulled'); hint.textContent='.....';
-  var wire=document.getElementById('wire'),knob=document.getElementById('knob');
-  wire.style.height='calc(100% + 30px)'; knob.style.transform='translateY(30px)';
-  setTimeout(function(){
-    wire.style.height='100%'; knob.style.transform='none';
-    document.getElementById('lampshade').classList.add('on');
-    document.getElementById('bulb').classList.add('on');
-    document.getElementById('face').classList.add('on');
-    document.getElementById('spotlight').classList.add('on');
-  },300);
-  setTimeout(function(){
-    var lamp=document.getElementById('lampScreen');
-    lamp.classList.add('exiting');
-    setTimeout(function(){ lamp.style.display='none'; document.getElementById('lockScreen').style.display='flex'; },600);
-  },1800);
-}
-var wireWrap=document.getElementById('wireWrap');
-wireWrap.addEventListener('click',triggerLamp);
-wireWrap.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;},{passive:true});
-wireWrap.addEventListener('touchmove',function(e){if(startY===null)return;var dy=e.touches[0].clientY-startY;if(dy>30){startY=null;triggerLamp();}},{passive:true});
-wireWrap.addEventListener('touchend',function(){startY=null;});
+// ===== INTRO APMR =====
+(function(){
+  var canvas=document.getElementById('introCanvas');
+  var ctx=canvas.getContext('2d');
+  function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  var pts=Array.from({length:50},function(){return{
+    x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+    r:Math.random()*1.2+.2,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+    life:Math.random()*Math.PI*2,col:Math.random()>.4?'90,172,218':'255,255,255'
+  };});
+  (function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pts.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.life+=.007;
+      if(p.x<0||p.x>canvas.width)p.vx*=-1;
+      if(p.y<0||p.y>canvas.height)p.vy*=-1;
+      var a=.08+.08*Math.sin(p.life);
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba('+p.col+','+a+')';ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
 
-// ===== LOCK =====
+var introDone=false;
+function triggerLamp(){
+  if(introDone)return;introDone=true;
+  var screen=document.getElementById('lampScreen');
+  screen.classList.add('exiting');
+  setTimeout(function(){screen.style.display='none';document.getElementById('lockScreen').style.display='flex';},700);
+}
+
+// Auto-déclenche après 3.8s, ou au tap/clic
+setTimeout(triggerLamp, 3800);
+document.getElementById('lampScreen').addEventListener('click',triggerLamp);
+document.getElementById('lampScreen').addEventListener('touchend',function(e){e.preventDefault();triggerLamp();},{passive:false});
+
 const SECRET='APMR';let input='',attempts=0,blocked=false;
 function pressKey(k){
-  if(blocked) return;
+  if(blocked)return;
   if(k==='⌫'){input=input.slice(0,-1);}else{if(input.length>=SECRET.length)return;input+=k;}
   updateDisplay();
-  if(input.length===SECRET.length) setTimeout(checkCode,120);
+  if(input.length===SECRET.length)setTimeout(checkCode,120);
 }
 function updateDisplay(){
   for(let i=0;i<SECRET.length;i++){const el=document.getElementById('pc'+i);el.textContent=input[i]||'';el.classList.toggle('filled',!!input[i]);el.classList.remove('error');}
@@ -639,15 +805,14 @@ function showScaryAlert(){
 }
 function logout(){input='';updateDisplay();document.getElementById('mainApp').style.display='none';document.getElementById('lockScreen').style.display='flex';goHome();}
 
-// ===== NAV =====
 const timers=new WeakMap();let toastTimer;
 function goTerminal(t){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+t).classList.add('active');
   document.getElementById('backBtn').style.display='block';
-  const labels={t1:'TERMINAL 1',t2:'TERMINAL 2',t3:'TERMINAL 3',tp:'PARKINGS → PORTES'};
+  const labels={t1:'TERMINAL 1',t2:'TERMINAL 2',t3:'TERMINAL 3',tp:'PARKINGS → PORTES',tt:'TRANSITS PISTE'};
   document.getElementById('headerTitle').textContent='✈ '+labels[t];
-  if(t!=='tp') document.querySelectorAll('#screen-'+t+' .card-code').forEach(c=>{c.dataset.hidden='true';c.closest('.card').querySelector('.card-hint').style.display='';});
+  if(t!=='tp'&&t!=='tt')document.querySelectorAll('#screen-'+t+' .card-code').forEach(c=>{c.dataset.hidden='true';c.closest('.card').querySelector('.card-hint').style.display='';});
   if(t==='tp'){document.querySelector('.park-search').value='';searchParking('');}
 }
 function goHome(){
@@ -662,7 +827,7 @@ function reveal(card){
     code.dataset.hidden='false';hint.style.display='none';
     clearTimeout(timers.get(card));
     timers.set(card,setTimeout(()=>{code.dataset.hidden='true';hint.style.display='';},5000));
-  } else {
+  }else{
     navigator.clipboard.writeText(code.dataset.code).catch(()=>{});
     code.classList.add('flash');setTimeout(()=>code.classList.remove('flash'),400);
     showToast('✓  '+code.dataset.code+'  COPIÉ');
