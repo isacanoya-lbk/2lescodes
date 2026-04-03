@@ -13,24 +13,18 @@
 <title>Codes d'accès & Points de Parkings</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Barlow+Condensed:wght@300;400;700;800&display=swap');
-:root{
-  --bg:#0a0f1e; --surface:#111827; --border:#1f2937;
-  --text:#e2e8f0; --muted:#4b5563;
-  --c1:#3b82f6; --c2:#8b5cf6; --c3:#10b981;
-  --c4:#f59e0b; --c5:#06b6d4; --c6:#ec4899;
-  --red:#ef4444;
-}
+:root{--bg:#0a0f1e;--surface:#111827;--border:#1f2937;--text:#e2e8f0;--muted:#4b5563;--c1:#3b82f6;--c2:#8b5cf6;--c3:#10b981;--c4:#f59e0b;--c5:#06b6d4;--c6:#ec4899;--red:#ef4444;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{min-height:100%;background:var(--bg);font-family:'Rajdhani',sans-serif;color:var(--text);}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:0;}
 
-/* ══════════════════════════════ INTRO ══════════════════════════════ */
+/* INTRO */
 #lampScreen{position:fixed;inset:0;z-index:300;background:#0c1018;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;transition:opacity .7s ease;}
 #lampScreen.exiting{opacity:0;pointer-events:none;}
 .intro-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(90,172,218,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(90,172,218,.06) 1px,transparent 1px);background-size:36px 36px;animation:introGridDrift 30s linear infinite;}
 @keyframes introGridDrift{from{background-position:0 0;}to{background-position:36px 36px;}}
 #introCanvas{position:absolute;inset:0;pointer-events:none;}
-.intro-tap-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:‘Share Tech Mono’,monospace;font-size:10px;letter-spacing:3px;color:rgba(90,172,218,.35);text-transform:uppercase;white-space:nowrap;opacity:0;animation:iFadeIn .6s ease 3.2s forwards;}
+.intro-tap-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(90,172,218,.35);text-transform:uppercase;white-space:nowrap;opacity:0;animation:iFadeIn .6s ease 3.2s forwards;}
 .intro-stage{position:relative;width:320px;height:320px;display:flex;align-items:center;justify-content:center;}
 .intro-ring-sys{position:absolute;inset:0;pointer-events:none;}
 .intro-ring-sys svg{width:100%;height:100%;overflow:visible;}
@@ -40,22 +34,25 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes iRotCW{to{transform:rotate(360deg);}}
 @keyframes iRotCCW{to{transform:rotate(-360deg);}}
 .iblip{animation:iBlipBlink 1.2s ease-in-out infinite;}
-.iblip:nth-child(2){animation-delay:.4s;} .iblip:nth-child(3){animation-delay:.8s;}
+.iblip:nth-child(2){animation-delay:.4s;}
+.iblip:nth-child(3){animation-delay:.8s;}
 @keyframes iBlipBlink{0%,100%{opacity:1;}50%{opacity:.2;}}
 .intro-hud-lines{position:absolute;inset:0;pointer-events:none;}
 .intro-hud-lines svg{width:100%;height:100%;overflow:visible;}
 .ihud-line{stroke-dasharray:200;stroke-dashoffset:200;animation:iLineDraw .6s ease forwards;}
 .ihud-line:nth-child(1){animation-delay:2.0s;}.ihud-line:nth-child(2){animation-delay:2.1s;}.ihud-line:nth-child(3){animation-delay:2.2s;}.ihud-line:nth-child(4){animation-delay:2.3s;}
 @keyframes iLineDraw{to{stroke-dashoffset:0;}}
-.ihud-label{position:absolute;font-family:‘Share Tech Mono’,monospace;font-size:7px;letter-spacing:2px;color:rgba(90,172,218,.6);text-transform:uppercase;line-height:1.6;opacity:0;animation:iFadeIn .4s ease forwards;white-space:nowrap;border:1px solid rgba(90,172,218,.2);padding:3px 6px;background:rgba(90,172,218,.04);}
+.ihud-label{position:absolute;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:rgba(90,172,218,.6);text-transform:uppercase;line-height:1.6;opacity:0;animation:iFadeIn .4s ease forwards;white-space:nowrap;border:1px solid rgba(90,172,218,.2);padding:3px 6px;background:rgba(90,172,218,.04);}
 @keyframes iFadeIn{to{opacity:1;}}
-.ihud-tl{top:20px;left:0;animation-delay:2.4s;text-align:right;} .ihud-tr{top:20px;right:0;animation-delay:2.5s;}
-.ihud-bl{bottom:20px;left:0;animation-delay:2.6s;text-align:right;} .ihud-br{bottom:20px;right:0;animation-delay:2.7s;}
+.ihud-tl{top:20px;left:0;animation-delay:2.4s;text-align:right;}
+.ihud-tr{top:20px;right:0;animation-delay:2.5s;}
+.ihud-bl{bottom:20px;left:0;animation-delay:2.6s;text-align:right;}
+.ihud-br{bottom:20px;right:0;animation-delay:2.7s;}
 .intro-logo{position:relative;width:180px;animation:iLogoReveal 1s cubic-bezier(.22,1,.36,1) .5s both;}
 @keyframes iLogoReveal{from{opacity:0;transform:scale(.7) rotate(-8deg);}to{opacity:1;transform:scale(1) rotate(0deg);}}
 .intro-logo-top{background:#2b3445;border-radius:12px 12px 0 0;padding:20px 20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;overflow:hidden;}
-.intro-logo-top::before{content:’’;position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0px,transparent 18px,rgba(255,255,255,.015) 18px,rgba(255,255,255,.015) 19px);pointer-events:none;}
-.intro-logo-top::after{content:’’;position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:120px;height:60px;background:radial-gradient(ellipse,rgba(90,172,218,.18),transparent 70%);pointer-events:none;}
+.intro-logo-top::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0px,transparent 18px,rgba(255,255,255,.015) 18px,rgba(255,255,255,.015) 19px);pointer-events:none;}
+.intro-logo-top::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:120px;height:60px;background:radial-gradient(ellipse,rgba(90,172,218,.18),transparent 70%);pointer-events:none;}
 .intro-s-svg{width:80px;height:80px;overflow:visible;filter:drop-shadow(0 0 14px rgba(255,255,255,.1));animation:iSPulse 5s ease-in-out infinite;}
 @keyframes iSPulse{0%,100%{filter:drop-shadow(0 0 14px rgba(255,255,255,.1));}50%{filter:drop-shadow(0 0 30px rgba(255,255,255,.22)) drop-shadow(0 0 60px rgba(90,172,218,.15));}}
 .is-outline{stroke-dasharray:700;stroke-dashoffset:700;animation:iDrawS 1.4s ease .6s forwards;}
@@ -63,190 +60,158 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .is-body{opacity:0;animation:iFadeIn .5s ease 1.2s forwards;}
 .is-shine{animation:iShineWipe 5s ease-in-out infinite 2s;}
 @keyframes iShineWipe{0%{transform:translateX(-60px);opacity:0;}15%{opacity:.6;}85%{opacity:.6;}100%{transform:translateX(120px);opacity:0;}}
-.intro-samsic{font-family:‘Barlow Condensed’,sans-serif;font-weight:300;font-size:13px;letter-spacing:7px;color:rgba(255,255,255,.85);text-transform:uppercase;opacity:0;animation:isFadeUp .6s ease 1.5s forwards;}
+.intro-samsic{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:13px;letter-spacing:7px;color:rgba(255,255,255,.85);text-transform:uppercase;opacity:0;animation:isFadeUp .6s ease 1.5s forwards;}
 @keyframes isFadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 .intro-logo-bottom{background:#5aacda;border-radius:0 0 12px 12px;padding:10px 20px 12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.intro-logo-bottom::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,.3);}
-.intro-logo-bottom::after{content:’’;position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);transform:translateX(-100%);animation:iBarShine 4s ease-in-out infinite 2s;}
+.intro-logo-bottom::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,.3);}
+.intro-logo-bottom::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);transform:translateX(-100%);animation:iBarShine 4s ease-in-out infinite 2s;}
 @keyframes iBarShine{0%{transform:translateX(-100%);}100%{transform:translateX(200%);}}
-.intro-apmr{font-family:‘Barlow Condensed’,sans-serif;font-weight:800;font-size:34px;letter-spacing:6px;color:#fff;display:flex;gap:0;}
+.intro-apmr{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:34px;letter-spacing:6px;color:#fff;display:flex;gap:0;}
 .intro-apmr span{display:inline-block;opacity:0;animation:iLetterPop .45s cubic-bezier(.34,1.56,.64,1) forwards;}
 .intro-apmr span:nth-child(1){animation-delay:1.6s;}.intro-apmr span:nth-child(2){animation-delay:1.75s;}.intro-apmr span:nth-child(3){animation-delay:1.9s;}.intro-apmr span:nth-child(4){animation-delay:2.05s;}
 @keyframes iLetterPop{from{opacity:0;transform:scale(.5) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
 
-/* ══════════════════════════════ LOCK ══════════════════════════════ */
-#lockScreen{position:fixed;inset:0;z-index:100;background:var(–bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;}
+/* LOCK */
+#lockScreen{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;}
 .lock-logo{font-size:48px;margin-bottom:10px;animation:floatLogo 3s ease-in-out infinite;}
 @keyframes floatLogo{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.lock-title{font-family:‘Share Tech Mono’,monospace;font-size:16px;letter-spacing:4px;color:#fff;text-transform:uppercase;margin-bottom:4px;text-align:center;line-height:1.5;}
-.lock-sub{font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–muted);letter-spacing:3px;margin-bottom:40px;}
+.lock-title{font-family:'Share Tech Mono',monospace;font-size:16px;letter-spacing:4px;color:#fff;text-transform:uppercase;margin-bottom:4px;text-align:center;}
+.lock-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:3px;margin-bottom:40px;}
 .pin-display{display:flex;gap:12px;margin-bottom:32px;}
-.pin-char{width:44px;height:52px;background:var(–surface);border:1px solid var(–border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:‘Share Tech Mono’,monospace;font-size:24px;color:var(–c1);text-shadow:0 0 12px var(–c1);transition:border-color .2s,box-shadow .2s;}
-.pin-char.filled{border-color:var(–c1);box-shadow:0 0 12px rgba(59,130,246,.3);}
-.pin-char.error{border-color:var(–red)!important;color:var(–red)!important;text-shadow:0 0 12px var(–red)!important;box-shadow:0 0 12px rgba(239,68,68,.3)!important;animation:shake .35s ease;}
+.pin-char{width:44px;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:24px;color:var(--c1);text-shadow:0 0 12px var(--c1);transition:border-color .2s,box-shadow .2s;}
+.pin-char.filled{border-color:var(--c1);box-shadow:0 0 12px rgba(59,130,246,.3);}
+.pin-char.error{border-color:var(--red)!important;color:var(--red)!important;text-shadow:0 0 12px var(--red)!important;box-shadow:0 0 12px rgba(239,68,68,.3)!important;animation:shake .35s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
 @keyframes scaryPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.15);opacity:.6;}}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:280px;}
-.key{background:var(–surface);border:1px solid var(–border);border-radius:12px;height:58px;display:flex;align-items:center;justify-content:center;font-family:‘Share Tech Mono’,monospace;font-size:18px;color:var(–text);cursor:pointer;transition:background .1s,transform .1s;-webkit-user-select:none;user-select:none;letter-spacing:1px;}
-.key:active{background:rgba(59,130,246,.15);transform:scale(.94);border-color:var(–c1);}
-.key.del{font-size:20px;color:var(–muted);}
+.key{background:var(--surface);border:1px solid var(--border);border-radius:12px;height:58px;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--text);cursor:pointer;transition:background .1s,transform .1s;-webkit-user-select:none;user-select:none;letter-spacing:1px;}
+.key:active{background:rgba(59,130,246,.15);transform:scale(.94);border-color:var(--c1);}
+.key.del{font-size:20px;color:var(--muted);}
 .key.empty{visibility:hidden;cursor:default;}
-.lock-error{font-family:‘Share Tech Mono’,monospace;font-size:11px;color:var(–red);letter-spacing:2px;margin-top:16px;height:16px;}
+.lock-error{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);letter-spacing:2px;margin-top:16px;height:16px;}
 
-/* ══════════════════════════════ APP ══════════════════════════════ */
+/* APP */
 .app{position:relative;z-index:1;min-height:100vh;}
-header{background:#111827;border-bottom:1px solid #1f2937;padding:14px 20px;text-align:center;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;}
-.back-btn{position:absolute;left:14px;background:none;border:none;color:var(–muted);font-size:20px;cursor:pointer;padding:4px 8px;font-family:‘Share Tech Mono’,monospace;display:none;transition:color .2s;}
-.back-btn:active{color:var(–text);}
-.logout-btn{position:absolute;right:14px;background:none;border:none;color:var(–muted);font-size:16px;cursor:pointer;padding:4px 8px;font-family:‘Share Tech Mono’,monospace;transition:color .2s;}
-.logout-btn:active{color:var(–red);}
-header h1{font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;}
-header p{font-family:‘Share Tech Mono’,monospace;font-size:9px;color:var(–muted);letter-spacing:2px;margin-top:2px;}
-.screen{display:none;padding:18px 14px 50px;}
+header{background:#111827;border-bottom:1px solid #1f2937;padding:14px 20px;text-align:center;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;gap:12px;}
+.back-btn{position:absolute;left:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 8px;font-family:'Share Tech Mono',monospace;display:none;transition:color .2s;}
+.back-btn:active{color:var(--text);}
+.logout-btn{position:absolute;right:16px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:4px 8px;font-family:'Share Tech Mono',monospace;transition:color .2s;}
+.logout-btn:active{color:var(--red);}
+header h1{font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;}
+header p{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:3px;}
+.screen{display:none;padding:20px 16px 50px;}
 .screen.active{display:block;}
 
-/* ══════════════════════════════ LED BORDER ══════════════════════════════ */
-@property –angle{syntax:’<angle>’;initial-value:0deg;inherits:false;}
-@keyframes rotateLED{to{–angle:360deg;}}
-.block{position:relative;border-radius:18px;padding:2px;margin-bottom:12px;cursor:pointer;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));animation:rotateLED 3s linear infinite;transition:transform .15s;}
-.block:active{transform:scale(.97);}
-.block::after{content:’’;position:absolute;inset:-5px;border-radius:23px;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));filter:blur(16px);opacity:.22;animation:rotateLED 3s linear infinite;z-index:-1;}
-
-/* couleurs par thème */
-.cl-codes {–c-a:#3b82f6;–c-b:#8b5cf6;}
-.cl-park  {–c-a:#f59e0b;–c-b:#ef4444;}
-.cl-tt    {–c-a:#06b6d4;–c-b:#3b82f6;}
-.cl-search{–c-a:#10b981;–c-b:#06b6d4;}
-.cl-t1    {–c-a:#3b82f6;–c-b:#8b5cf6;}
-.cl-t2    {–c-a:#8b5cf6;–c-b:#ec4899;}
-.cl-t2a   {–c-a:#ec4899;–c-b:#f59e0b;}
-.cl-t2b   {–c-a:#8b5cf6;–c-b:#ec4899;}
-.cl-t2c   {–c-a:#10b981;–c-b:#06b6d4;}
-.cl-t2d   {–c-a:#8b5cf6;–c-b:#3b82f6;}
-.cl-t3    {–c-a:#10b981;–c-b:#3b82f6;}
-.cl-chair {–c-a:#f59e0b;–c-b:#ef4444;}
-
-.block-inner{background:var(–surface);border-radius:16px;padding:17px 16px;display:flex;align-items:center;justify-content:space-between;}
-.block-left{display:flex;align-items:center;gap:12px;}
-.led-dot{width:9px;height:9px;border-radius:50%;animation:blink 1.8s ease-in-out infinite;flex-shrink:0;}
+/* LED border */
+@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
+@keyframes rotateLED{to{--angle:360deg;}}
+.terminal-select-block{position:relative;border-radius:18px;padding:2px;margin-bottom:14px;cursor:pointer;background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));animation:rotateLED 3s linear infinite;transition:transform .15s;}
+.terminal-select-block:active{transform:scale(.97);}
+.terminal-select-block::after{content:'';position:absolute;inset:-5px;border-radius:23px;background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));filter:blur(16px);opacity:.22;animation:rotateLED 3s linear infinite;z-index:-1;}
+.t1{--c-a:#3b82f6;--c-b:#8b5cf6;}.t2{--c-a:#8b5cf6;--c-b:#ec4899;}.t2a{--c-a:#ec4899;--c-b:#f59e0b;}.t2b{--c-a:#8b5cf6;--c-b:#ec4899;}.t2c{--c-a:#10b981;--c-b:#06b6d4;}.t2d{--c-a:#8b5cf6;--c-b:#3b82f6;}.t3{--c-a:#10b981;--c-b:#3b82f6;}.tp{--c-a:#f59e0b;--c-b:#ef4444;}.tt{--c-a:#06b6d4;--c-b:#3b82f6;}.codes{--c-a:#3b82f6;--c-b:#8b5cf6;}.codes2{--c-a:#8b5cf6;--c-b:#ec4899;}.codes3{--c-a:#10b981;--c-b:#3b82f6;}.chair{--c-a:#f59e0b;--c-b:#06b6d4;}
+.terminal-select-inner{background:var(--surface);border-radius:16px;padding:18px 18px;display:flex;align-items:center;justify-content:space-between;}
+.ts-left{display:flex;align-items:center;gap:14px;}
+.led-dot{width:10px;height:10px;border-radius:50%;animation:blink 1.8s ease-in-out infinite;flex-shrink:0;}
+.t1 .led-dot,.codes .led-dot{background:var(--c1);box-shadow:0 0 10px var(--c1);}
+.t2 .led-dot,.t2b .led-dot,.t2d .led-dot,.codes2 .led-dot{background:var(--c2);box-shadow:0 0 10px var(--c2);}
+.t2a .led-dot{background:var(--c6);box-shadow:0 0 10px var(--c6);}
+.t2c .led-dot,.t3 .led-dot,.codes3 .led-dot{background:var(--c3);box-shadow:0 0 10px var(--c3);}
+.tp .led-dot{background:var(--c4);box-shadow:0 0 10px var(--c4);}
+.tt .led-dot{background:var(--c5);box-shadow:0 0 10px var(--c5);}
+.chair .led-dot{background:var(--c4);box-shadow:0 0 10px var(--c4);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.cl-codes .led-dot{background:var(–c1);box-shadow:0 0 8px var(–c1);}
-.cl-park  .led-dot{background:var(–c4);box-shadow:0 0 8px var(–c4);}
-.cl-tt    .led-dot{background:var(–c5);box-shadow:0 0 8px var(–c5);}
-.cl-search .led-dot{background:var(–c3);box-shadow:0 0 8px var(–c3);}
-.cl-t1    .led-dot{background:var(–c1);box-shadow:0 0 8px var(–c1);}
-.cl-t2    .led-dot{background:var(–c2);box-shadow:0 0 8px var(–c2);}
-.cl-t2a   .led-dot{background:var(–c6);box-shadow:0 0 8px var(–c6);}
-.cl-t2b   .led-dot{background:var(–c2);box-shadow:0 0 8px var(–c2);}
-.cl-t2c   .led-dot{background:var(–c3);box-shadow:0 0 8px var(–c3);}
-.cl-t2d   .led-dot{background:var(–c2);box-shadow:0 0 8px var(–c2);}
-.cl-t3    .led-dot{background:var(–c3);box-shadow:0 0 8px var(–c3);}
-.cl-chair .led-dot{background:var(–c4);box-shadow:0 0 8px var(–c4);}
-.block-label{font-family:‘Share Tech Mono’,monospace;font-size:14px;letter-spacing:3px;text-transform:uppercase;}
-.cl-codes .block-label{color:var(–c1);text-shadow:0 0 10px var(–c1);}
-.cl-park  .block-label{color:var(–c4);text-shadow:0 0 10px var(–c4);}
-.cl-tt    .block-label{color:var(–c5);text-shadow:0 0 10px var(–c5);}
-.cl-search .block-label{color:var(–c3);text-shadow:0 0 10px var(–c3);}
-.cl-t1    .block-label{color:var(–c1);text-shadow:0 0 10px var(–c1);}
-.cl-t2    .block-label{color:var(–c2);text-shadow:0 0 10px var(–c2);}
-.cl-t2a   .block-label{color:var(–c6);text-shadow:0 0 10px var(–c6);}
-.cl-t2b   .block-label{color:var(–c2);text-shadow:0 0 10px var(–c2);}
-.cl-t2c   .block-label{color:var(–c3);text-shadow:0 0 10px var(–c3);}
-.cl-t2d   .block-label{color:var(–c2);text-shadow:0 0 10px var(–c2);}
-.cl-t3    .block-label{color:var(–c3);text-shadow:0 0 10px var(–c3);}
-.cl-chair .block-label{color:var(–c4);text-shadow:0 0 10px var(–c4);}
-.block-sub{font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–muted);letter-spacing:1px;margin-top:3px;}
-.block-arrow{font-size:18px;color:var(–muted);font-family:‘Share Tech Mono’,monospace;}
+.ts-label{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:3px;text-transform:uppercase;}
+.t1 .ts-label,.codes .ts-label{color:var(--c1);text-shadow:0 0 12px var(--c1);}
+.t2 .ts-label,.t2b .ts-label,.t2d .ts-label,.codes2 .ts-label{color:var(--c2);text-shadow:0 0 12px var(--c2);}
+.t2a .ts-label{color:var(--c6);text-shadow:0 0 12px var(--c6);}
+.t2c .ts-label,.t3 .ts-label,.codes3 .ts-label{color:var(--c3);text-shadow:0 0 12px var(--c3);}
+.tp .ts-label{color:var(--c4);text-shadow:0 0 12px var(--c4);}
+.tt .ts-label{color:var(--c5);text-shadow:0 0 12px var(--c5);}
+.chair .ts-label{color:var(--c4);text-shadow:0 0 12px var(--c4);}
+.ts-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:3px;}
+.ts-arrow{font-size:20px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
 
-/* ══════════════════════════════ SECTION TITLE ══════════════════════════════ */
-.screen-title{font-family:‘Share Tech Mono’,monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(–border);}
-.col-codes{color:var(–c1);} .col-t2{color:var(–c2);} .col-t3{color:var(–c3);} .col-park{color:var(–c4);} .col-tt{color:var(–c5);} .col-t2a{color:var(–c6);} .col-t2c{color:var(–c3);} .col-search{color:var(–c3);}
-.sub-section{font-family:‘Share Tech Mono’,monospace;font-size:10px;letter-spacing:3px;color:var(–muted);text-transform:uppercase;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid var(–border);}
+/* Screen titles */
+.screen-title{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.c1{color:var(--c1);}.c2{color:var(--c2);}.c3{color:var(--c3);}.c4{color:var(--c4);}.c5{color:var(--c5);}.c6{color:var(--c6);}
 
-/* ══════════════════════════════ CARDS ══════════════════════════════ */
-.cards-led{position:relative;border-radius:18px;padding:2px;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));animation:rotateLED 3s linear infinite;margin-bottom:6px;}
-.cards-led::after{content:’’;position:absolute;inset:-5px;border-radius:23px;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));filter:blur(16px);opacity:.16;animation:rotateLED 3s linear infinite;z-index:-1;}
-.cards-wrap{background:var(–surface);border-radius:16px;overflow:hidden;}
-.card{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:58px;border-bottom:1px solid var(–border);cursor:pointer;transition:background .15s;gap:10px;-webkit-user-select:none;user-select:none;}
+/* Cards LED */
+.cards-led{position:relative;border-radius:18px;padding:2px;background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));animation:rotateLED 3s linear infinite;}
+.cards-led::after{content:'';position:absolute;inset:-5px;border-radius:23px;background:conic-gradient(from var(--angle,0deg),var(--c-a),var(--c-b),var(--c-a));filter:blur(16px);opacity:.18;animation:rotateLED 3s linear infinite;z-index:-1;}
+.cards-wrap{background:var(--surface);border-radius:16px;overflow:hidden;}
+.card{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:60px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;gap:12px;-webkit-user-select:none;user-select:none;}
 .card:last-child{border-bottom:none;}
-.card:active{background:rgba(255,255,255,.04);}
-.card-room{font-size:13px;font-weight:600;letter-spacing:.4px;flex:1;}
-.card-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.card-hint{font-family:‘Share Tech Mono’,monospace;font-size:8px;letter-spacing:2px;color:var(–muted);text-transform:uppercase;}
-.card-code{font-family:‘Share Tech Mono’,monospace;font-size:18px;font-weight:700;letter-spacing:4px;min-width:76px;text-align:right;transition:opacity .3s,transform .3s;}
-.card-code[data-hidden=“true”]{opacity:0;transform:scale(.8);pointer-events:none;}
+.card:active{background:rgba(255,255,255,.05);}
+.card-room{font-size:14px;font-weight:600;letter-spacing:.5px;}
+.card-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.card-hint{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.card-code{font-family:'Share Tech Mono',monospace;font-size:19px;font-weight:700;letter-spacing:4px;min-width:80px;text-align:right;transition:opacity .3s,transform .3s;}
+.card-code[data-hidden="true"]{opacity:0;transform:scale(.8);pointer-events:none;}
 @keyframes flashCopy{0%,100%{opacity:1}40%{opacity:.15}}
 .flash{animation:flashCopy .4s ease;}
+.screen-codes .cards-led.codes .card-code{color:var(--c1);text-shadow:0 0 14px var(--c1);}
+.screen-codes2 .cards-led.codes2 .card-code{color:var(--c2);text-shadow:0 0 14px var(--c2);}
+.screen-codes3 .cards-led.codes3 .card-code{color:var(--c3);text-shadow:0 0 14px var(--c3);}
+.screen-chair .cards-led.chair .card-code{color:var(--c4);text-shadow:0 0 14px var(--c4);}
+.screen-t1 .cards-led.t1 .card-code{color:var(--c1);text-shadow:0 0 14px var(--c1);}
+.screen-t2a .cards-led.t2a .card-code{color:var(--c6);text-shadow:0 0 14px var(--c6);}
+.screen-t2b .cards-led.t2b .card-code{color:var(--c2);text-shadow:0 0 14px var(--c2);}
+.screen-t2c .cards-led.t2c .card-code{color:var(--c3);text-shadow:0 0 14px var(--c3);}
+.screen-t2d .cards-led.t2d .card-code{color:var(--c2);text-shadow:0 0 14px var(--c2);}
+.screen-t3 .cards-led.t3 .card-code{color:var(--c3);text-shadow:0 0 14px var(--c3);}
 
-/* code colors */
-.cl-codes.cards-led .card-code{color:var(–c1);text-shadow:0 0 12px var(–c1);}
-.cl-t2.cards-led .card-code,.cl-t2b.cards-led .card-code,.cl-t2d.cards-led .card-code{color:var(–c2);text-shadow:0 0 12px var(–c2);}
-.cl-t3.cards-led .card-code{color:var(–c3);text-shadow:0 0 12px var(–c3);}
+/* Sub sections */
+.sub-section{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
 
-/* chaise de transfert */
-.card-transfer{background:rgba(245,158,11,.05);border-left:2px solid rgba(245,158,11,.3);}
-.card-transfer .card-room{color:var(–c4);}
-.card-transfer .card-code{color:var(–c4)!important;text-shadow:0 0 12px var(–c4)!important;}
-
-/* chaise bleue (T2BD = 5965) */
-.card-transfer-b{background:rgba(139,92,246,.05);border-left:2px solid rgba(139,92,246,.3);}
-.card-transfer-b .card-room{color:var(–c2);}
-.card-transfer-b .card-code{color:var(–c2)!important;text-shadow:0 0 12px var(–c2)!important;}
-
-/* ══════════════════════════════ PARK ROWS ══════════════════════════════ */
-.park-table-wrap{background:var(–surface);border-radius:16px;overflow:hidden;border:1px solid var(–border);}
-.park-row{display:flex;align-items:center;padding:0 12px;min-height:46px;border-bottom:1px solid var(–border);gap:8px;cursor:pointer;transition:background .15s;-webkit-user-select:none;user-select:none;}
-.park-row:last-child{border-bottom:none;}
-.park-row:active{background:rgba(245,158,11,.07);}
-.park-pp{font-family:‘Share Tech Mono’,monospace;font-size:12px;font-weight:700;color:var(–c4);text-shadow:0 0 6px var(–c4);min-width:86px;}
-.park-sep{color:var(–muted);font-size:11px;flex-shrink:0;}
-.park-portes{font-family:‘Share Tech Mono’,monospace;font-size:12px;color:var(–text);flex:1;}
-.park-obs-tag{font-family:‘Share Tech Mono’,monospace;font-size:8px;color:var(–red);letter-spacing:1px;white-space:nowrap;background:rgba(239,68,68,.1);padding:2px 5px;border-radius:4px;}
-
-/* park LED wrapper */
-.park-led{position:relative;border-radius:18px;padding:2px;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));animation:rotateLED 3s linear infinite;margin-bottom:12px;}
-.park-led::after{content:’’;position:absolute;inset:-5px;border-radius:23px;background:conic-gradient(from var(–angle,0deg),var(–c-a),var(–c-b),var(–c-a));filter:blur(14px);opacity:.16;animation:rotateLED 3s linear infinite;z-index:-1;}
-
-/* ══════════════════════════════ SEARCH ══════════════════════════════ */
-.park-search-wrap{position:relative;margin-bottom:18px;}
-.park-search{width:100%;background:var(–surface);border:1px solid var(–border);border-radius:12px;padding:12px 16px 12px 42px;font-family:‘Share Tech Mono’,monospace;font-size:15px;color:var(–text);outline:none;transition:border-color .2s;letter-spacing:2px;text-transform:uppercase;}
-.park-search:focus{border-color:var(–c4);box-shadow:0 0 0 2px rgba(245,158,11,.15);}
-.park-search::placeholder{color:var(–muted);text-transform:none;letter-spacing:1px;}
+/* Park rows */
+.park-search-wrap{position:relative;margin-bottom:20px;}
+.park-search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px 12px 42px;font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--text);outline:none;transition:border-color .2s;letter-spacing:2px;text-transform:uppercase;}
+.park-search:focus{border-color:var(--c4);box-shadow:0 0 0 2px rgba(245,158,11,.15);}
+.park-search::placeholder{color:var(--muted);text-transform:none;letter-spacing:1px;}
 .search-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
-.park-result{display:none;background:var(–surface);border-radius:16px;border:2px solid var(–c4);box-shadow:0 0 24px rgba(245,158,11,.2);padding:20px;margin-bottom:18px;text-align:center;}
+.park-result{display:none;background:var(--surface);border-radius:16px;border:2px solid var(--c4);box-shadow:0 0 24px rgba(245,158,11,.2);padding:20px;margin-bottom:20px;text-align:center;}
 .park-result.show{display:block;}
-.park-result-pp{font-family:‘Share Tech Mono’,monospace;font-size:10px;letter-spacing:3px;color:var(–muted);margin-bottom:6px;}
-.park-result-name{font-family:‘Share Tech Mono’,monospace;font-size:28px;font-weight:700;color:var(–c4);text-shadow:0 0 16px var(–c4);letter-spacing:4px;margin-bottom:14px;}
-.park-result-arrow{font-size:18px;color:var(–muted);margin-bottom:10px;}
-.park-result-label{font-family:‘Share Tech Mono’,monospace;font-size:10px;letter-spacing:3px;color:var(–muted);margin-bottom:6px;}
-.park-result-portes{font-family:‘Share Tech Mono’,monospace;font-size:20px;font-weight:700;color:var(–text);letter-spacing:3px;}
-.park-result-obs{font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–red);letter-spacing:2px;margin-top:8px;}
-.park-result-sat{font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–muted);letter-spacing:2px;margin-top:4px;}
-.park-no-result{display:none;text-align:center;padding:20px;font-family:‘Share Tech Mono’,monospace;font-size:12px;color:var(–muted);letter-spacing:2px;}
+.park-result-pp{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;}
+.park-result-name{font-family:'Share Tech Mono',monospace;font-size:28px;font-weight:700;color:var(--c4);text-shadow:0 0 16px var(--c4);letter-spacing:4px;margin-bottom:16px;}
+.park-result-arrow{font-size:20px;color:var(--muted);margin-bottom:12px;}
+.park-result-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;}
+.park-result-portes{font-family:'Share Tech Mono',monospace;font-size:20px;font-weight:700;color:var(--text);letter-spacing:3px;}
+.park-result-obs{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--red);letter-spacing:2px;margin-top:8px;}
+.park-result-sat{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:4px;}
+.park-no-result{display:none;text-align:center;padding:20px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:2px;}
 .park-no-result.show{display:block;}
+.park-section-title{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.park-table-wrap{background:var(--surface);border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.park-row{display:flex;align-items:center;padding:0 12px;min-height:48px;border-bottom:1px solid var(--border);gap:10px;cursor:pointer;transition:background .15s;-webkit-user-select:none;user-select:none;}
+.park-row:last-child{border-bottom:none;}
+.park-row:active{background:rgba(245,158,11,.08);}
+.park-pp{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:var(--c4);text-shadow:0 0 8px var(--c4);min-width:90px;}
+.park-sep{color:var(--muted);font-size:12px;flex-shrink:0;}
+.park-portes{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text);flex:1;}
+.park-obs{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--red);letter-spacing:1px;white-space:nowrap;}
 
-/* ══════════════════════════════ TRANSIT ══════════════════════════════ */
-.transit-row{display:flex;align-items:center;padding:0 18px;height:66px;border-bottom:1px solid var(–border);gap:14px;}
+/* Transit */
+.transit-row{display:flex;align-items:center;padding:0 20px;height:68px;border-bottom:1px solid var(--border);gap:16px;}
 .transit-row:last-child{border-bottom:none;}
-.transit-porte{font-family:‘Share Tech Mono’,monospace;font-size:26px;font-weight:700;color:var(–c5);text-shadow:0 0 14px var(–c5),0 0 28px rgba(6,182,212,.3);min-width:30px;text-align:center;}
-.transit-sep{color:var(–muted);font-size:20px;flex-shrink:0;}
-.transit-info{display:flex;flex-direction:column;gap:3px;flex:1;}
-.transit-module{font-family:‘Share Tech Mono’,monospace;font-size:17px;font-weight:700;color:var(–text);letter-spacing:3px;}
-.transit-terminal{font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–muted);letter-spacing:2px;text-transform:uppercase;}
+.transit-porte{font-family:'Share Tech Mono',monospace;font-size:26px;font-weight:700;color:var(--c5);text-shadow:0 0 14px var(--c5),0 0 28px rgba(6,182,212,.3);min-width:32px;text-align:center;}
+.transit-sep{color:var(--muted);font-size:20px;flex-shrink:0;}
+.transit-info{display:flex;flex-direction:column;gap:4px;flex:1;}
+.transit-module{font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;color:var(--text);letter-spacing:3px;}
+.transit-terminal{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
 
-/* ══════════════════════════════ UTILS ══════════════════════════════ */
-.remark-box{font-family:‘Share Tech Mono’,monospace;font-size:9px;color:var(–red);letter-spacing:1px;text-align:center;padding:10px 0 0;line-height:2.2;}
-.remark-box.muted{color:var(–muted);}
-.mb14{margin-bottom:14px;}
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#e2e8f0;color:#0a0f1e;font-family:‘Share Tech Mono’,monospace;font-size:13px;padding:10px 24px;border-radius:50px;z-index:999;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;letter-spacing:1px;}
+/* Remarques */
+.remark-box{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1px;text-align:center;padding:10px 0 0;line-height:2.2;}
+.remark-box.muted{color:var(--muted);}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#e2e8f0;color:#0a0f1e;font-family:'Share Tech Mono',monospace;font-size:13px;padding:10px 24px;border-radius:50px;z-index:999;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;letter-spacing:1px;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monospace;font-size:10px;color:var(–muted);letter-spacing:2px;}
+footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
 </style>
 
 </head>
 <body>
 
-<!-- ════════════════════════════ INTRO APMR ════════════════════════════ -->
+<!-- INTRO APMR -->
 
 <div id="lampScreen">
   <div class="intro-grid-bg"></div>
@@ -254,7 +219,9 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
   <div class="intro-stage">
     <div class="intro-ring-sys">
       <svg viewBox="0 0 320 320">
-        <defs><filter id="iglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        <defs>
+          <filter id="iglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
         <g class="ir1">
           <circle cx="160" cy="160" r="148" stroke="#5aacda" stroke-width="1" stroke-dasharray="12 8" fill="none" opacity=".2"/>
           <circle class="iblip" cx="160" cy="12" r="3.5" fill="#5aacda" filter="url(#iglow)" opacity=".8"/>
@@ -312,12 +279,12 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
   <div class="intro-tap-hint">APPUYER POUR CONTINUER</div>
 </div>
 
-<!-- ════════════════════════════ LOCK ════════════════════════════ -->
+<!-- LOCK -->
 
 <div id="lockScreen">
   <div class="lock-logo">✈️</div>
-  <div class="lock-title">CODES ACCÈS &amp;<br>POINTS DE PARKINGS</div>
-  <div class="lock-sub">SAMSIC APMR ♿ · CDG</div>
+  <div class="lock-title">CODES ACCÈS &amp; POINTS DE PARKINGS</div>
+  <div class="lock-sub">SAMSIC APMR ♿️</div>
   <div class="pin-display">
     <div class="pin-char" id="pc0"></div><div class="pin-char" id="pc1"></div>
     <div class="pin-char" id="pc2"></div><div class="pin-char" id="pc3"></div>
@@ -334,116 +301,99 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
 <!-- SCARY -->
 
 <div id="scaryOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:#000;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;">
-  <div style="font-size:60px;margin-bottom:18px;animation:scaryPulse .5s ease-in-out infinite;">⚠️</div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:#ef4444;margin-bottom:14px;text-shadow:0 0 20px #ef4444;">ACCÈS NON AUTORISÉ</div>
+  <div style="font-size:64px;margin-bottom:20px;animation:scaryPulse .5s ease-in-out infinite;">⚠️</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:#ef4444;margin-bottom:16px;text-shadow:0 0 20px #ef4444;">ACCÈS NON AUTORISÉ</div>
   <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#ef4444;letter-spacing:2px;line-height:2.2;margin-bottom:10px;opacity:.85;">TENTATIVE D'INTRUSION DÉTECTÉE<br>ADRESSE IP ENREGISTRÉE<br>SIGNALEMENT EN COURS...<br>RESPONSABLE SÉCURITÉ ALERTÉ</div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:#6b7280;letter-spacing:2px;margin-bottom:22px;">ACCÈS BLOQUÉ · RÉESSAI DANS</div>
-  <div id="scaryCountdown" style="font-family:'Share Tech Mono',monospace;font-size:52px;color:#ef4444;text-shadow:0 0 30px #ef4444;font-weight:700;">30</div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#374151;margin-top:28px;letter-spacing:1px;">SAMSIC SECURITY SYSTEM v2.4</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:#6b7280;letter-spacing:2px;margin-bottom:24px;">ACCÈS BLOQUÉ · RÉESSAI DANS</div>
+  <div id="scaryCountdown" style="font-family:'Share Tech Mono',monospace;font-size:56px;color:#ef4444;text-shadow:0 0 30px #ef4444;font-weight:700;">30</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#374151;margin-top:30px;letter-spacing:1px;">SAMSIC SECURITY SYSTEM v2.4</div>
 </div>
 
-<!-- ════════════════════════════ APP ════════════════════════════ -->
+<!-- APP -->
 
 <div class="app" id="mainApp" style="display:none">
   <header>
     <button class="back-btn" id="backBtn" onclick="goBack()">←</button>
-    <div><h1 id="headerTitle">✈ SAMSIC APMR · CDG</h1><p id="headerSub">Codes · Parkings · Transits</p></div>
+    <div><h1 id="headerTitle">✈ Codes d'accès &amp; Parkings</h1><p id="headerSub">SAMSIC APMR · CDG</p></div>
     <button class="logout-btn" onclick="logout()">🔒</button>
   </header>
 
-  <!-- ══════════ HOME ══════════ -->
+  <!-- HOME -->
 
   <div class="screen active" id="screen-home">
-    <!-- 1 - Codes d'accès -->
-    <div class="block cl-codes" onclick="nav('codes','CODES D\'ACCÈS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">📋 Codes d'accès</div><div class="block-sub">T1 · T2A · T2B · T2C · T2D · T3</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block codes" onclick="nav('codes','CODES D\'ACCÈS')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">📋 Codes d'accès</div><div class="ts-count">T1 · T2ABCD · T3</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <!-- 2 - Points de parkings -->
-    <div class="block cl-park" onclick="nav('parkings','POINTS DE PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">🅿 Points de parkings</div><div class="block-sub">T1 · T2A · T2C · T2B · T2D</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block tp" onclick="nav('parkings','POINTS DE PARKINGS')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">🅿 Points de parkings</div><div class="ts-count">T1 · T2A · T2B · T2C · T2D</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <!-- 3 - Transits -->
-    <div class="block cl-tt" onclick="nav('tt','TRANSITS PISTE')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">🛤 Transits piste</div><div class="block-sub">Porte → Module · 4 liaisons</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block tt" onclick="nav('tt','TRANSITS PISTE')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">🛤 Transits piste</div><div class="ts-count">Porte → Module · 4 liaisons</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <!-- 4 - Recherche globale -->
-    <div class="block cl-search" onclick="nav('search','RECHERCHE GLOBALE')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">🔍 Recherche globale</div><div class="block-sub">Parking → Porte · tous terminaux</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block tp" onclick="nav('search','RECHERCHE PARKING')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">🔍 Recherche parking</div><div class="ts-count">Parking → Porte tous terminaux</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <footer>CRÉÉ PAR LEBKIRI · v6.0</footer>
+    <footer>CRÉÉ PAR LEBKIRI · v7.0</footer>
   </div>
 
-  <!-- ══════════ 1 - CODES D'ACCÈS (menu) ══════════ -->
+  <!-- CODES D'ACCÈS MENU -->
 
   <div class="screen" id="screen-codes">
-    <div class="screen-title col-codes">▸ 📋 CODES D'ACCÈS</div>
-    <div class="block cl-t1" onclick="nav('codes-t1','TERMINAL 1 · CODES')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 1</div><div class="block-sub">Codes + Chaise 4854</div></div></div><div class="block-arrow">›</div></div>
+    <div class="screen-title c1">▸ 📋 CODES D'ACCÈS</div>
+    <div class="terminal-select-block codes" onclick="nav('codes-t1','TERMINAL 1')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 1</div><div class="ts-count">Codes accès</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t2" onclick="nav('codes-t2','TERMINAL 2 · CODES')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 2 (A/B/C/D)</div><div class="block-sub">Codes + Chaises 4854 · 5965</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block codes2" onclick="nav('codes-t2','TERMINAL 2')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2 (2A/2B/2C/2D)</div><div class="ts-count">Codes accès</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t3" onclick="nav('codes-t3','TERMINAL 3 · CODES')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 3</div><div class="block-sub">Codes d'accès</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block codes3" onclick="nav('codes-t3','TERMINAL 3')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 3</div><div class="ts-count">Codes accès</div></div></div><div class="ts-arrow">›</div></div>
+    </div>
+    <div class="terminal-select-block chair" onclick="nav('chair','CHAISES DE TRANSFERT')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">♿ Chaises de transfert</div><div class="ts-count">T1/2AC vs T2BD</div></div></div><div class="ts-arrow">›</div></div>
     </div>
   </div>
 
-  <!-- ══════════ 1A - CODES T1 ══════════ -->
+  <!-- CODES T1 -->
 
-  <div class="screen" id="screen-codes-t1">
-    <div class="screen-title col-codes">▸ TERMINAL 1 · CODES D'ACCÈS</div>
-    <div class="cards-led cl-t1"><div class="cards-wrap">
+  <div class="screen screen-codes" id="screen-codes-t1">
+    <div class="screen-title c1">▸ TERMINAL 1 · CODES</div>
+    <div class="cards-led codes"><div class="cards-wrap">
       <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage / Repli</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2328A">C2328A</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Locale Fauteuils Porte 24</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="CB174">CB174</div></div></div>
     </div></div>
-    <div class="sub-section">▸ CHAISE DE TRANSFERT · T1</div>
-    <div class="cards-led cl-chair"><div class="cards-wrap">
-      <div class="card card-transfer" onclick="reveal(this)"><div class="card-room">♿ Chaise de transfert · T1</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="4854">4854</div></div></div>
+  </div>
+
+  <!-- CODES T2 -->
+
+  <div class="screen screen-codes2" id="screen-codes-t2">
+    <div class="screen-title c2">▸ TERMINAL 2 · CODES</div>
+    <div class="sub-section">▸ TERMINAL 2A</div>
+    <div class="cards-led codes2"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
+    </div></div>
+    <div class="sub-section">▸ TERMINAL 2B</div>
+    <div class="cards-led codes2"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="1976B">1976B</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli / Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C1987Z">C1987Z</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Hommes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+      <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Femmes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
+    </div></div>
+    <div class="sub-section">▸ TERMINAL 2C</div>
+    <div class="cards-led codes2"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
+    </div></div>
+    <div class="sub-section">▸ TERMINAL 2D</div>
+    <div class="cards-led codes2"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
     </div></div>
   </div>
 
-  <!-- ══════════ 1B - CODES T2 ══════════ -->
+  <!-- CODES T3 -->
 
-  <div class="screen" id="screen-codes-t2">
-    <div class="screen-title col-t2">▸ TERMINAL 2 · CODES D'ACCÈS</div>
-
-```
-<div class="sub-section">▸ TERMINAL 2A</div>
-<div class="cards-led cl-t2a"><div class="cards-wrap">
-  <div class="card card-transfer" onclick="reveal(this)"><div class="card-room">♿ Chaise de transfert · T2A</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="4854">4854</div></div></div>
-</div></div>
-
-<div class="sub-section">▸ TERMINAL 2B</div>
-<div class="cards-led cl-t2b"><div class="cards-wrap">
-  <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="1976B">1976B</div></div></div>
-  <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli / Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C1987Z">C1987Z</div></div></div>
-  <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Hommes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
-  <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Femmes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
-  <div class="card card-transfer-b" onclick="reveal(this)"><div class="card-room">♿ Chaise de transfert · T2B</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="5965">5965</div></div></div>
-</div></div>
-
-<div class="sub-section">▸ TERMINAL 2C</div>
-<div class="cards-led cl-t2c"><div class="cards-wrap">
-  <div class="card card-transfer" onclick="reveal(this)"><div class="card-room">♿ Chaise de transfert · T2C</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="4854">4854</div></div></div>
-</div></div>
-
-<div class="sub-section">▸ TERMINAL 2D</div>
-<div class="cards-led cl-t2d"><div class="cards-wrap">
-  <div class="card card-transfer-b" onclick="reveal(this)"><div class="card-room">♿ Chaise de transfert · T2D</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="5965">5965</div></div></div>
-</div></div>
-
-<!-- légende -->
-<div class="remark-box" style="color:var(--c4);margin-top:4px;">♿ T1 · T2A · T2C → <span style="letter-spacing:2px;font-size:11px;">4854</span></div>
-<div class="remark-box" style="color:var(--c2);padding-top:6px;">♿ T2B · T2D → <span style="letter-spacing:2px;font-size:11px;">5965</span></div>
-```
-
-  </div>
-
-  <!-- ══════════ 1C - CODES T3 ══════════ -->
-
-  <div class="screen" id="screen-codes-t3">
-    <div class="screen-title col-codes">▸ TERMINAL 3 · CODES D'ACCÈS</div>
-    <div class="cards-led cl-t3"><div class="cards-wrap">
+  <div class="screen screen-codes3" id="screen-codes-t3">
+    <div class="screen-title c3">▸ TERMINAL 3 · CODES</div>
+    <div class="cards-led codes3"><div class="cards-wrap">
       <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2307A">C2307A</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2468">C2468</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C2468A">C2468A</div></div></div>
@@ -452,33 +402,47 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
     </div></div>
   </div>
 
-  <!-- ══════════ 2 - PARKINGS (menu) ══════════ -->
+  <!-- CHAISES DE TRANSFERT -->
+
+  <div class="screen screen-chair" id="screen-chair">
+    <div class="screen-title c4">▸ ♿ CHAISES DE TRANSFERT</div>
+    <div class="sub-section">▸ TERMINAL 1 · 2A · 2C</div>
+    <div class="cards-led chair"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Chaise de transfert</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="4854">4854</div></div></div>
+    </div></div>
+    <div class="sub-section">▸ TERMINAL 2B · 2D</div>
+    <div class="cards-led chair"><div class="cards-wrap">
+      <div class="card" onclick="reveal(this)"><div class="card-room">Chaise de transfert</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="5965">5965</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- PARKINGS MENU -->
 
   <div class="screen" id="screen-parkings">
-    <div class="screen-title col-park">▸ 🅿 POINTS DE PARKINGS</div>
-    <div class="block cl-t1" onclick="nav('park-t1','TERMINAL 1 · PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 1</div><div class="block-sub">Inter · Schengen · SAT 4</div></div></div><div class="block-arrow">›</div></div>
+    <div class="screen-title c4">▸ 🅿 POINTS DE PARKINGS</div>
+    <div class="terminal-select-block t1" onclick="nav('park-t1','TERMINAL 1')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 1</div><div class="ts-count">Points parkings</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t2a" onclick="nav('park-t2a','TERMINAL 2A · PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 2A</div><div class="block-sub">Portes A37 → A52</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block t2a" onclick="nav('park-t2a','TERMINAL 2A')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2A</div><div class="ts-count">Points parkings</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t2c" onclick="nav('park-t2c','TERMINAL 2C · PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 2C</div><div class="block-sub">Portes C80 → C91</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block t2b" onclick="nav('park-t2b','TERMINAL 2B')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2B</div><div class="ts-count">Points parkings</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t2b" onclick="nav('park-t2b','TERMINAL 2B · PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 2B</div><div class="block-sub">Portes B20 → B31</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block t2c" onclick="nav('park-t2c','TERMINAL 2C')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2C</div><div class="ts-count">Points parkings</div></div></div><div class="ts-arrow">›</div></div>
     </div>
-    <div class="block cl-t2d" onclick="nav('park-t2d','TERMINAL 2D · PARKINGS')">
-      <div class="block-inner"><div class="block-left"><div class="led-dot"></div><div><div class="block-label">Terminal 2D</div><div class="block-sub">Portes D50 → D69 · Schengen</div></div></div><div class="block-arrow">›</div></div>
+    <div class="terminal-select-block t2d" onclick="nav('park-t2d','TERMINAL 2D')">
+      <div class="terminal-select-inner"><div class="ts-left"><div class="led-dot"></div><div><div class="ts-label">Terminal 2D</div><div class="ts-count">Points parkings</div></div></div><div class="ts-arrow">›</div></div>
     </div>
   </div>
 
-  <!-- ══════════ 2A - PARKINGS T1 ══════════ -->
+  <!-- TERMINAL 1 PARKINGS -->
 
-  <div class="screen" id="screen-park-t1">
-    <div class="screen-title col-codes">▸ TERMINAL 1 · PARKINGS</div>
-    <div class="sub-section">▸ INTER — SAT 3 · JONCTION · SAT 1 · SAT 7</div>
-    <div class="park-led cl-t1 mb14"><div class="park-table-wrap">
+  <div class="screen screen-t1" id="screen-park-t1">
+    <div class="screen-title c1">▸ TERMINAL 1 · PARKINGS</div>
+    <div class="sub-section">▸ POINTS PARKINGS T1 · INTER</div>
+    <div class="cards-led t1" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('U06')"><div class="park-pp">U06</div><div class="park-sep">→</div><div class="park-portes">Porte 10</div></div>
       <div class="park-row" onclick="quickSearch('U07')"><div class="park-pp">U07</div><div class="park-sep">→</div><div class="park-portes">Porte 11</div></div>
       <div class="park-row" onclick="quickSearch('U09')"><div class="park-pp">U09</div><div class="park-sep">→</div><div class="park-portes">Porte 12</div></div>
@@ -498,8 +462,8 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
       <div class="park-row" onclick="quickSearch('W06')"><div class="park-pp">W06</div><div class="park-sep">→</div><div class="park-portes">Porte 37</div></div>
       <div class="park-row" onclick="quickSearch('W07')"><div class="park-pp">W07</div><div class="park-sep">→</div><div class="park-portes">Porte 38</div></div>
     </div></div>
-    <div class="sub-section">▸ SCHENGEN — SAT 5 · SAT 6</div>
-    <div class="park-led cl-t1 mb14"><div class="park-table-wrap">
+    <div class="sub-section">▸ POINTS PARKINGS T1 · SCHENGEN</div>
+    <div class="cards-led t1" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('Y01')"><div class="park-pp">Y01</div><div class="park-sep">→</div><div class="park-portes">Portes 50 · 51</div></div>
       <div class="park-row" onclick="quickSearch('Y02')"><div class="park-pp">Y02</div><div class="park-sep">→</div><div class="park-portes">Porte 52</div></div>
       <div class="park-row" onclick="quickSearch('Y03')"><div class="park-pp">Y03</div><div class="park-sep">→</div><div class="park-portes">Porte 53</div></div>
@@ -516,8 +480,8 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
       <div class="park-row" onclick="quickSearch('X07')"><div class="park-pp">X07</div><div class="park-sep">→</div><div class="park-portes">Porte 67</div></div>
       <div class="park-row" onclick="quickSearch('X08')"><div class="park-pp">X08</div><div class="park-sep">→</div><div class="park-portes">Porte 68</div></div>
     </div></div>
-    <div class="sub-section">▸ SAT 4 — Arrivées Inter</div>
-    <div class="park-led cl-t1 mb14"><div class="park-table-wrap">
+    <div class="sub-section">▸ POINTS PARKINGS T1 · SAT 4 ARRIVÉES</div>
+    <div class="cards-led t1" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('Z01')"><div class="park-pp">Z01</div><div class="park-sep">→</div><div class="park-portes">Portes 40 · 41</div></div>
       <div class="park-row" onclick="quickSearch('Z02')"><div class="park-pp">Z02</div><div class="park-sep">→</div><div class="park-portes">Porte 42</div></div>
       <div class="park-row" onclick="quickSearch('Z03')"><div class="park-pp">Z03</div><div class="park-sep">→</div><div class="park-portes">Porte 43</div></div>
@@ -530,15 +494,15 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
     <div class="remark-box">⚠ Large Inter T1 → salle large porte 19 · passer les CAB en porte<br>⚠ U05 → pas d'ascenseur</div>
   </div>
 
-  <!-- ══════════ 2B - PARKINGS T2A ══════════ -->
+  <!-- TERMINAL 2A PARKINGS -->
 
-  <div class="screen" id="screen-park-t2a">
-    <div class="screen-title col-t2a">▸ TERMINAL 2A · PARKINGS</div>
-    <div class="park-led cl-t2a mb14"><div class="park-table-wrap">
+  <div class="screen screen-t2a" id="screen-park-t2a">
+    <div class="screen-title c6">▸ TERMINAL 2A · PARKINGS</div>
+    <div class="cards-led t2a" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('A18')"><div class="park-pp">A18 · A16</div><div class="park-sep">→</div><div class="park-portes">A51 · A52</div></div>
       <div class="park-row" onclick="quickSearch('A14')"><div class="park-pp">A14</div><div class="park-sep">→</div><div class="park-portes">A48 · A49</div></div>
       <div class="park-row" onclick="quickSearch('A12')"><div class="park-pp">A12</div><div class="park-sep">→</div><div class="park-portes">A46 · A47</div></div>
-      <div class="park-row" onclick="quickSearch('A10')"><div class="park-pp">A10</div><div class="park-sep">→</div><div class="park-portes">A44 · A45</div><div class="park-obs-tag">ARV LARGE</div></div>
+      <div class="park-row" onclick="quickSearch('A10')"><div class="park-pp">A10</div><div class="park-sep">→</div><div class="park-portes">A44 · A45</div><div class="park-obs">ARV LARGE</div></div>
       <div class="park-row" onclick="quickSearch('A08')"><div class="park-pp">A08</div><div class="park-sep">→</div><div class="park-portes">A42 · A43</div></div>
       <div class="park-row" onclick="quickSearch('A04')"><div class="park-pp">A04 · A06</div><div class="park-sep">→</div><div class="park-portes">A40 · A41</div></div>
       <div class="park-row" onclick="quickSearch('A30')"><div class="park-pp">A30</div><div class="park-sep">→</div><div class="park-portes">A37</div></div>
@@ -548,26 +512,11 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
     <div class="remark-box">⚠ Ascenseur embarquement au large · Porte A45<br>⚠ A10 → ARV au large</div>
   </div>
 
-  <!-- ══════════ 2C - PARKINGS T2C ══════════ -->
+  <!-- TERMINAL 2B PARKINGS -->
 
-  <div class="screen" id="screen-park-t2c">
-    <div class="screen-title col-t2c">▸ TERMINAL 2C · PARKINGS</div>
-    <div class="park-led cl-t2c mb14"><div class="park-table-wrap">
-      <div class="park-row" onclick="quickSearch('C02')"><div class="park-pp">C02</div><div class="park-sep">→</div><div class="park-portes">C80 · C81</div></div>
-      <div class="park-row" onclick="quickSearch('C04')"><div class="park-pp">C04</div><div class="park-sep">→</div><div class="park-portes">C82 · C83</div></div>
-      <div class="park-row" onclick="quickSearch('C06')"><div class="park-pp">C06</div><div class="park-sep">→</div><div class="park-portes">C84 · C85</div></div>
-      <div class="park-row" onclick="quickSearch('C08')"><div class="park-pp">C08</div><div class="park-sep">→</div><div class="park-portes">C86 · C87</div><div class="park-obs-tag">ARV LARGE</div></div>
-      <div class="park-row" onclick="quickSearch('C10')"><div class="park-pp">C10 · C12</div><div class="park-sep">→</div><div class="park-portes">C88 · C89</div></div>
-      <div class="park-row" onclick="quickSearch('C14')"><div class="park-pp">C14</div><div class="park-sep">→</div><div class="park-portes">C90 · C91</div></div>
-    </div></div>
-    <div class="remark-box">⚠ C08 → ARV au large</div>
-  </div>
-
-  <!-- ══════════ 2D - PARKINGS T2B ══════════ -->
-
-  <div class="screen" id="screen-park-t2b">
-    <div class="screen-title col-t2">▸ TERMINAL 2B · PARKINGS</div>
-    <div class="park-led cl-t2b mb14"><div class="park-table-wrap">
+  <div class="screen screen-t2b" id="screen-park-t2b">
+    <div class="screen-title c2">▸ TERMINAL 2B · PARKINGS</div>
+    <div class="cards-led t2b" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('B2')"><div class="park-pp">B2 · B4 · B6</div><div class="park-sep">→</div><div class="park-portes">B30 · B31 · D40 · D41</div></div>
       <div class="park-row" onclick="quickSearch('B8')"><div class="park-pp">B8 · B10 · B12</div><div class="park-sep">→</div><div class="park-portes">B28 · B29</div></div>
       <div class="park-row" onclick="quickSearch('B14')"><div class="park-pp">B14</div><div class="park-sep">→</div><div class="park-portes">B26 · B27</div></div>
@@ -578,11 +527,26 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
     <div class="remark-box">⚠ CNT B → à côté porte B12 · entre PP B14 et B18 · pancarte jaune 2B/2D</div>
   </div>
 
-  <!-- ══════════ 2E - PARKINGS T2D ══════════ -->
+  <!-- TERMINAL 2C PARKINGS -->
 
-  <div class="screen" id="screen-park-t2d">
-    <div class="screen-title col-t2">▸ TERMINAL 2D · PARKINGS</div>
-    <div class="park-led cl-t2d mb14"><div class="park-table-wrap">
+  <div class="screen screen-t2c" id="screen-park-t2c">
+    <div class="screen-title c3">▸ TERMINAL 2C · PARKINGS</div>
+    <div class="cards-led t2c" style="margin-bottom:14px"><div class="park-table-wrap">
+      <div class="park-row" onclick="quickSearch('C02')"><div class="park-pp">C02</div><div class="park-sep">→</div><div class="park-portes">C80 · C81</div></div>
+      <div class="park-row" onclick="quickSearch('C04')"><div class="park-pp">C04</div><div class="park-sep">→</div><div class="park-portes">C82 · C83</div></div>
+      <div class="park-row" onclick="quickSearch('C06')"><div class="park-pp">C06</div><div class="park-sep">→</div><div class="park-portes">C84 · C85</div></div>
+      <div class="park-row" onclick="quickSearch('C08')"><div class="park-pp">C08</div><div class="park-sep">→</div><div class="park-portes">C86 · C87</div><div class="park-obs">ARV LARGE</div></div>
+      <div class="park-row" onclick="quickSearch('C10')"><div class="park-pp">C10 · C12</div><div class="park-sep">→</div><div class="park-portes">C88 · C89</div></div>
+      <div class="park-row" onclick="quickSearch('C14')"><div class="park-pp">C14</div><div class="park-sep">→</div><div class="park-portes">C90 · C91</div></div>
+    </div></div>
+    <div class="remark-box">⚠ C08 → ARV au large</div>
+  </div>
+
+  <!-- TERMINAL 2D PARKINGS -->
+
+  <div class="screen screen-t2d" id="screen-park-t2d">
+    <div class="screen-title c2">▸ TERMINAL 2D · PARKINGS</div>
+    <div class="cards-led t2d" style="margin-bottom:14px"><div class="park-table-wrap">
       <div class="park-row" onclick="quickSearch('D20')"><div class="park-pp">D20 · D22 · D24</div><div class="park-sep">→</div><div class="park-portes">D50 · D51</div></div>
       <div class="park-row" onclick="quickSearch('D18')"><div class="park-pp">D18</div><div class="park-sep">→</div><div class="park-portes">D52 · D53</div></div>
       <div class="park-row" onclick="quickSearch('D16')"><div class="park-pp">D16</div><div class="park-sep">→</div><div class="park-portes">D54 · D55</div></div>
@@ -593,25 +557,10 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
     <div class="remark-box">⚠ CNT D → portes D58 · D59 · D60<br>⚠ ARV au large → entre SLB et PP D24</div>
   </div>
 
-  <!-- ══════════ 3 - TRANSITS PISTE ══════════ -->
-
-  <div class="screen" id="screen-tt">
-    <div class="screen-title col-tt">▸ 🛤 TRANSITS PAR PISTE</div>
-    <div class="park-led cl-tt mb14">
-      <div class="park-table-wrap">
-        <div class="transit-row"><div class="transit-porte">F</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">Module P</div><div class="transit-terminal">Terminal 2F</div></div></div>
-        <div class="transit-row"><div class="transit-porte">K</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">E26</div><div class="transit-terminal">Terminal 2E</div></div></div>
-        <div class="transit-row"><div class="transit-porte">L</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">F15</div><div class="transit-terminal">Terminal S3</div></div></div>
-        <div class="transit-row"><div class="transit-porte">M</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">M23</div><div class="transit-terminal">Terminal S4</div></div></div>
-      </div>
-    </div>
-    <div class="remark-box muted">🛤 TRANSIT PAR PISTE · ACCÈS CÔTÉ PISTE · VÉHICULE</div>
-  </div>
-
-  <!-- ══════════ 4 - RECHERCHE GLOBALE ══════════ -->
+  <!-- RECHERCHE PARKINGS GLOBALE -->
 
   <div class="screen" id="screen-search">
-    <div class="screen-title col-search">▸ 🔍 RECHERCHE PARKING → PORTE</div>
+    <div class="screen-title c4">▸ ���� RECHERCHE PARKING → PORTE</div>
     <div class="park-search-wrap">
       <span class="search-ico">🔍</span>
       <input class="park-search" id="mainParkSearch" type="text" placeholder="Ex: U06, A10, B18, C08, D14…" oninput="searchParking(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -626,7 +575,22 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
       <div class="park-result-sat" id="prSat"></div>
     </div>
     <div class="park-no-result" id="parkNoResult">PARKING INTROUVABLE</div>
-    <div class="remark-box muted" style="padding:0 0 14px;">T1 · T2A · T2B · T2C · T2D — tous terminaux</div>
+    <div class="remark-box muted" style="padding:0 0 16px;">T1 · T2A · T2B · T2C · T2D — tous terminaux</div>
+  </div>
+
+  <!-- TRANSITS PISTE -->
+
+  <div class="screen" id="screen-tt">
+    <div class="screen-title c5">▸ 🛤 TRANSITS PAR PISTE</div>
+    <div class="cards-led tt" style="margin-bottom:20px">
+      <div class="park-table-wrap">
+        <div class="transit-row"><div class="transit-porte">F</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">Module P</div><div class="transit-terminal">Terminal 2F</div></div></div>
+        <div class="transit-row"><div class="transit-porte">K</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">E26</div><div class="transit-terminal">Terminal 2E</div></div></div>
+        <div class="transit-row"><div class="transit-porte">L</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">F15</div><div class="transit-terminal">Terminal S3</div></div></div>
+        <div class="transit-row"><div class="transit-porte">M</div><div class="transit-sep">→</div><div class="transit-info"><div class="transit-module">M23</div><div class="transit-terminal">Terminal S4</div></div></div>
+      </div>
+    </div>
+    <div class="remark-box muted">🛤 TRANSIT PAR PISTE · ACCÈS CÔTÉ PISTE · VÉHICULE</div>
   </div>
 
 </div><!-- /app -->
@@ -635,42 +599,33 @@ footer{text-align:center;margin-top:28px;font-family:‘Share Tech Mono’,monos
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 
-/* ══════ DONNÉES PARKINGS ══════ */
 const PARKINGS={
-  // T1 INTER
-  'U06':{p:'Porte 10',s:'T1 · SAT 3 Inter'},'U07':{p:'Porte 11',s:'T1 · SAT 3 Inter'},'U09':{p:'Porte 12',s:'T1 · SAT 3 Inter'},
-  'U10':{p:'Porte 14',s:'T1 · SAT 3 Inter'},'U11':{p:'Portes 15 · 16',s:'T1 · SAT 3 Inter'},'U12':{p:'Porte 18',s:'T1 · Jonction Inter'},
-  'U05':{p:'Porte 20',s:'T1 · Jonction Inter',o:'⚠ Pas d\'ascenseur'},
-  'U13':{p:'Porte 22',s:'T1 · Jonction'},'U04':{p:'Porte 23',s:'T1 · Jonction'},'U03':{p:'Porte 24',s:'T1 · Jonction'},
-  'U14':{p:'Porte 26',s:'T1 · Jonction'},'U15':{p:'Porte 28',s:'T1 · Jonction'},
-  'U16':{p:'Porte 30',s:'T1 · SAT 1 Inter'},'U17':{p:'Portes 31 · 32',s:'T1 · SAT 1 Inter'},
-  'W04':{p:'Porte 34',s:'T1 · SAT 7'},'W05':{p:'Portes 35 · 36',s:'T1 · SAT 7'},'W06':{p:'Porte 37',s:'T1 · SAT 7'},'W07':{p:'Porte 38',s:'T1 · SAT 7'},
-  // T1 SCHENGEN
-  'Y01':{p:'Portes 50 · 51',s:'T1 · SAT 5 Schengen'},'Y02':{p:'Porte 52',s:'T1 · SAT 5 Schengen'},'Y03':{p:'Porte 53',s:'T1 · SAT 5 Schengen'},
-  'Y04':{p:'Porte 54',s:'T1 · SAT 5 Schengen'},'Y05':{p:'Porte 55',s:'T1 · SAT 5 Schengen'},'Y06':{p:'Porte 56',s:'T1 · SAT 5 Schengen'},'Y07':{p:'Porte 57',s:'T1 · SAT 5 Schengen'},
-  'X01':{p:'Porte 61',s:'T1 · SAT 6 Schengen'},'X02':{p:'Porte 62',s:'T1 · SAT 6 Schengen'},'X03':{p:'Porte 63',s:'T1 · SAT 6 Schengen'},
-  'X04':{p:'Porte 64',s:'T1 · SAT 6 Schengen'},'X05':{p:'Porte 65',s:'T1 · SAT 6 Schengen'},'X06':{p:'Porte 66',s:'T1 · SAT 6 Schengen'},
-  'X07':{p:'Porte 67',s:'T1 · SAT 6 Schengen'},'X08':{p:'Porte 68',s:'T1 · SAT 6 Schengen'},
-  // T1 SAT4
-  'Z01':{p:'Portes 40 · 41',s:'T1 · SAT 4 Arrivées'},'Z02':{p:'Porte 42',s:'T1 · SAT 4'},'Z03':{p:'Porte 43',s:'T1 · SAT 4'},
-  'Z04':{p:'Porte 44',s:'T1 · SAT 4'},'Z05':{p:'Porte 45',s:'T1 · SAT 4'},'Z06':{p:'Porte 46',s:'T1 · SAT 4'},
-  'Z09':{p:'Porte 47',s:'T1 · SAT 4'},'Z07':{p:'Porte 48',s:'T1 · SAT 4'},
-  // T2A
-  'A18':{p:'A51 · A52',s:'T2A'},'A16':{p:'A51 · A52',s:'T2A'},'A14':{p:'A48 · A49',s:'T2A'},'A12':{p:'A46 · A47',s:'T2A'},
-  'A10':{p:'A44 · A45',s:'T2A',o:'⚠ ARV au large'},'A08':{p:'A42 · A43',s:'T2A'},'A06':{p:'A40 · A41',s:'T2A'},'A04':{p:'A40 · A41',s:'T2A'},
-  'A30':{p:'A37',s:'T2A'},'A32':{p:'A38',s:'T2A'},'A34':{p:'A38',s:'T2A'},'A36':{p:'A38',s:'T2A'},'A38':{p:'A39',s:'T2A'},
-  // T2B
-  'B2':{p:'B30 · B31 · D40 · D41',s:'T2B'},'B4':{p:'B30 · B31 · D40 · D41',s:'T2B'},'B6':{p:'B30 · B31 · D40 · D41',s:'T2B'},
-  'B8':{p:'B28 · B29',s:'T2B'},'B10':{p:'B28 · B29',s:'T2B'},'B12':{p:'B28 · B29',s:'T2B'},
-  'B14':{p:'B26 · B27',s:'T2B'},'B16':{p:'B24 · B25',s:'T2B'},'B18':{p:'B22 · B23',s:'T2B'},'B20':{p:'B20 · B21',s:'T2B'},
-  // T2C
-  'C02':{p:'C80 · C81',s:'T2C'},'C04':{p:'C82 · C83',s:'T2C'},'C06':{p:'C84 · C85',s:'T2C'},
-  'C08':{p:'C86 · C87',s:'T2C',o:'⚠ ARV au large'},'C10':{p:'C88 · C89',s:'T2C'},'C12':{p:'C88 · C89',s:'T2C'},'C14':{p:'C90 · C91',s:'T2C'},
-  // T2D
-  'D20':{p:'D50 · D51',s:'T2D'},'D22':{p:'D50 · D51',s:'T2D'},'D24':{p:'D50 · D51',s:'T2D'},
-  'D18':{p:'D52 · D53',s:'T2D'},'D16':{p:'D54 · D55',s:'T2D'},'D14':{p:'D56 · D57 · D65',s:'T2D'},
-  'D8':{p:'D66 · D67',s:'T2D'},'D10':{p:'D66 · D67',s:'T2D'},'D12':{p:'D66 · D67',s:'T2D'},
-  'D2':{p:'D68 · D69',s:'T2D'},'D4':{p:'D68 · D69',s:'T2D'},'D6':{p:'D68 · D69',s:'T2D'},
+  'U06':{portes:'Porte 10',sat:'T1 · SAT 3 Inter'},'U07':{portes:'Porte 11',sat:'T1 · SAT 3 Inter'},'U09':{portes:'Porte 12',sat:'T1 · SAT 3 Inter'},
+  'U10':{portes:'Porte 14',sat:'T1 · SAT 3 Inter'},'U11':{portes:'Portes 15 · 16',sat:'T1 · SAT 3 Inter'},'U12':{portes:'Porte 18',sat:'T1 · Jonction Inter'},
+  'U05':{portes:'Porte 20',sat:'T1 · Jonction Inter',obs:'⚠ Pas d\'ascenseur'},'U13':{portes:'Porte 22',sat:'T1 · Jonction Inter'},
+  'U04':{portes:'Porte 23',sat:'T1 · Jonction Inter'},'U03':{portes:'Porte 24',sat:'T1 · Jonction Inter'},'U14':{portes:'Porte 26',sat:'T1 · Jonction Inter'},
+  'U15':{portes:'Porte 28',sat:'T1 · Jonction Inter'},'U16':{portes:'Porte 30',sat:'T1 · SAT 1 Inter'},'U17':{portes:'Portes 31 · 32',sat:'T1 · SAT 1 Inter'},
+  'W04':{portes:'Porte 34',sat:'T1 · SAT 7 Inter'},'W05':{portes:'Portes 35 · 36',sat:'T1 · SAT 7 Inter'},'W06':{portes:'Porte 37',sat:'T1 · SAT 7 Inter'},'W07':{portes:'Porte 38',sat:'T1 · SAT 7 Inter'},
+  'Y01':{portes:'Portes 50 · 51',sat:'T1 · SAT 5 Schengen'},'Y02':{portes:'Porte 52',sat:'T1 · SAT 5 Schengen'},'Y03':{portes:'Porte 53',sat:'T1 · SAT 5 Schengen'},
+  'Y04':{portes:'Porte 54',sat:'T1 · SAT 5 Schengen'},'Y05':{portes:'Porte 55',sat:'T1 · SAT 5 Schengen'},'Y06':{portes:'Porte 56',sat:'T1 · SAT 5 Schengen'},'Y07':{portes:'Porte 57',sat:'T1 · SAT 5 Schengen'},
+  'X01':{portes:'Porte 61',sat:'T1 · SAT 6 Schengen'},'X02':{portes:'Porte 62',sat:'T1 · SAT 6 Schengen'},'X03':{portes:'Porte 63',sat:'T1 · SAT 6 Schengen'},
+  'X04':{portes:'Porte 64',sat:'T1 · SAT 6 Schengen'},'X05':{portes:'Porte 65',sat:'T1 · SAT 6 Schengen'},'X06':{portes:'Porte 66',sat:'T1 · SAT 6 Schengen'},
+  'X07':{portes:'Porte 67',sat:'T1 · SAT 6 Schengen'},'X08':{portes:'Porte 68',sat:'T1 · SAT 6 Schengen'},
+  'Z01':{portes:'Portes 40 · 41',sat:'T1 · SAT 4 Arrivées'},'Z02':{portes:'Porte 42',sat:'T1 · SAT 4 Arrivées'},'Z03':{portes:'Porte 43',sat:'T1 · SAT 4 Arrivées'},
+  'Z04':{portes:'Porte 44',sat:'T1 · SAT 4 Arrivées'},'Z05':{portes:'Porte 45',sat:'T1 · SAT 4 Arrivées'},'Z06':{portes:'Porte 46',sat:'T1 · SAT 4 Arrivées'},
+  'Z09':{portes:'Porte 47',sat:'T1 · SAT 4 Arrivées'},'Z07':{portes:'Porte 48',sat:'T1 · SAT 4 Arrivées'},
+  'A18':{portes:'A51 · A52',sat:'T2A'},'A16':{portes:'A51 · A52',sat:'T2A'},'A14':{portes:'A48 · A49',sat:'T2A'},'A12':{portes:'A46 · A47',sat:'T2A'},
+  'A10':{portes:'A44 · A45',sat:'T2A',obs:'⚠ ARV au large'},'A08':{portes:'A42 · A43',sat:'T2A'},'A06':{portes:'A40 · A41',sat:'T2A'},'A04':{portes:'A40 · A41',sat:'T2A'},
+  'A30':{portes:'A37',sat:'T2A'},'A32':{portes:'A38',sat:'T2A'},'A34':{portes:'A38',sat:'T2A'},'A36':{portes:'A38',sat:'T2A'},'A38':{portes:'A39',sat:'T2A'},
+  'B2':{portes:'B30 · B31 · D40 · D41',sat:'T2B'},'B4':{portes:'B30 · B31 · D40 · D41',sat:'T2B'},'B6':{portes:'B30 · B31 · D40 · D41',sat:'T2B'},
+  'B8':{portes:'B28 · B29',sat:'T2B'},'B10':{portes:'B28 · B29',sat:'T2B'},'B12':{portes:'B28 · B29',sat:'T2B'},
+  'B14':{portes:'B26 · B27',sat:'T2B'},'B16':{portes:'B24 · B25',sat:'T2B'},'B18':{portes:'B22 · B23',sat:'T2B'},'B20':{portes:'B20 · B21',sat:'T2B'},
+  'C02':{portes:'C80 · C81',sat:'T2C'},'C04':{portes:'C82 · C83',sat:'T2C'},'C06':{portes:'C84 · C85',sat:'T2C'},
+  'C08':{portes:'C86 · C87',sat:'T2C',obs:'⚠ ARV au large'},'C10':{portes:'C88 · C89',sat:'T2C'},'C12':{portes:'C88 · C89',sat:'T2C'},'C14':{portes:'C90 · C91',sat:'T2C'},
+  'D20':{portes:'D50 · D51',sat:'T2D Schengen'},'D22':{portes:'D50 · D51',sat:'T2D Schengen'},'D24':{portes:'D50 · D51',sat:'T2D Schengen'},
+  'D18':{portes:'D52 · D53',sat:'T2D Schengen'},'D16':{portes:'D54 · D55',sat:'T2D Schengen'},'D14':{portes:'D56 · D57 · D65',sat:'T2D Schengen'},
+  'D8':{portes:'D66 · D67',sat:'T2D Schengen'},'D10':{portes:'D66 · D67',sat:'T2D Schengen'},'D12':{portes:'D66 · D67',sat:'T2D Schengen'},
+  'D2':{portes:'D68 · D69',sat:'T2D Schengen'},'D4':{portes:'D68 · D69',sat:'T2D Schengen'},'D6':{portes:'D68 · D69',sat:'T2D Schengen'},
 };
 
 function searchParking(val){
@@ -680,164 +635,90 @@ function searchParking(val){
   const d=PARKINGS[q];
   if(d){
     document.getElementById('prName').textContent=q;
-    document.getElementById('prPortes').textContent=d.p;
-    document.getElementById('prSat').textContent=d.s||'';
-    document.getElementById('prObs').textContent=d.o||'';
+    document.getElementById('prPortes').textContent=d.portes;
+    document.getElementById('prSat').textContent=d.sat||'';
+    document.getElementById('prObs').textContent=d.obs||'';
     res.classList.add('show');noRes.classList.remove('show');
   }else{res.classList.remove('show');noRes.classList.add('show');}
 }
 
 function quickSearch(pp){
-  nav('search','RECHERCHE GLOBALE');
+  nav('search','RECHERCHE PARKING');
   const inp=document.getElementById('mainParkSearch');
-  inp.value=pp; searchParking(pp);
+  inp.value=pp;searchParking(pp);
   setTimeout(()=>inp.scrollIntoView({behavior:'smooth',block:'start'}),120);
 }
 
-/* ══════ INTRO ══════ */
+// INTRO
 (function(){
   var c=document.getElementById('introCanvas'),ctx=c.getContext('2d');
-  function resize(){c.width=innerWidth;c.height=innerHeight;} resize(); window.addEventListener('resize',resize);
-  var pts=Array.from({length:50},()=>({
-    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
-    r:Math.random()*1.2+.2, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
-    life:Math.random()*Math.PI*2, col:Math.random()>.4?'90,172,218':'255,255,255'
-  }));
-  (function loop(){
-    ctx.clearRect(0,0,c.width,c.height);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.life+=.007;
-      if(p.x<0||p.x>c.width)p.vx*=-1; if(p.y<0||p.y>c.height)p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${p.col},${.08+.08*Math.sin(p.life)})`; ctx.fill();
-    });
-    requestAnimationFrame(loop);
-  })();
+  function resize(){c.width=innerWidth;c.height=innerHeight;}resize();window.addEventListener('resize',resize);
+  var pts=Array.from({length:50},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+.2,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,life:Math.random()*Math.PI*2,col:Math.random()>.4?'90,172,218':'255,255,255'}));
+  (function loop(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life+=.007;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;var a=.08+.08*Math.sin(p.life);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba('+p.col+','+a+')';ctx.fill();});requestAnimationFrame(loop);})();
 })();
-
 var introDone=false;
-function triggerLamp(){
-  if(introDone)return; introDone=true;
-  const s=document.getElementById('lampScreen');
-  s.classList.add('exiting');
-  setTimeout(()=>{s.style.display='none'; document.getElementById('lockScreen').style.display='flex';},700);
-}
+function triggerLamp(){if(introDone)return;introDone=true;var s=document.getElementById('lampScreen');s.classList.add('exiting');setTimeout(()=>{s.style.display='none';document.getElementById('lockScreen').style.display='flex';},700);}
 setTimeout(triggerLamp,3800);
 document.getElementById('lampScreen').addEventListener('click',triggerLamp);
 document.getElementById('lampScreen').addEventListener('touchend',e=>{e.preventDefault();triggerLamp();},{passive:false});
 
-/* ══════ LOCK ══════ */
-const SECRET='APMR'; let input='',attempts=0,blocked=false;
-function pressKey(k){
-  if(blocked)return;
-  if(k==='⌫'){input=input.slice(0,-1);}else{if(input.length>=SECRET.length)return; input+=k;}
-  updateDisplay();
-  if(input.length===SECRET.length)setTimeout(checkCode,120);
-}
-function updateDisplay(){
-  for(let i=0;i<SECRET.length;i++){
-    const el=document.getElementById('pc'+i);
-    el.textContent=input[i]||''; el.classList.toggle('filled',!!input[i]); el.classList.remove('error');
-  }
-}
+// LOCK
+const SECRET='APMR';let input='',attempts=0,blocked=false;
+function pressKey(k){if(blocked)return;if(k==='⌫'){input=input.slice(0,-1);}else{if(input.length>=SECRET.length)return;input+=k;}updateDisplay();if(input.length===SECRET.length)setTimeout(checkCode,120);}
+function updateDisplay(){for(let i=0;i<SECRET.length;i++){const el=document.getElementById('pc'+i);el.textContent=input[i]||'';el.classList.toggle('filled',!!input[i]);el.classList.remove('error');}}
 function checkCode(){
-  if(input===SECRET){
-    attempts=0;
-    document.getElementById('lockScreen').style.display='none';
-    document.getElementById('mainApp').style.display='block';
-  }else{
-    attempts++;
-    for(let i=0;i<SECRET.length;i++)document.getElementById('pc'+i).classList.add('error');
+  if(input===SECRET){attempts=0;document.getElementById('lockScreen').style.display='none';document.getElementById('mainApp').style.display='block';}
+  else{attempts++;for(let i=0;i<SECRET.length;i++)document.getElementById('pc'+i).classList.add('error');
     if(attempts>=3){blocked=true;showScaryAlert();}
-    else{
-      const left=3-attempts;
-      document.getElementById('lockError').textContent='⚠ CODE INCORRECT · '+left+' ESSAI'+(left>1?'S':'')+' RESTANT';
-      setTimeout(()=>{input='';updateDisplay();document.getElementById('lockError').textContent='';},900);
-    }
-  }
+    else{const left=3-attempts;document.getElementById('lockError').textContent='⚠ CODE INCORRECT · '+left+' ESSAI'+(left>1?'S':'')+' RESTANT';setTimeout(()=>{input='';updateDisplay();document.getElementById('lockError').textContent='';},900);}}
 }
-function showScaryAlert(){
-  const o=document.getElementById('scaryOverlay'); o.style.display='flex';
-  let s=30; document.getElementById('scaryCountdown').textContent=s;
-  const iv=setInterval(()=>{
-    s--; document.getElementById('scaryCountdown').textContent=s;
-    if(s<=0){clearInterval(iv);o.style.display='none';blocked=false;attempts=0;input='';updateDisplay();document.getElementById('lockError').textContent='';}
-  },1000);
-}
-function logout(){
-  input=''; updateDisplay();
-  document.getElementById('mainApp').style.display='none';
-  document.getElementById('lockScreen').style.display='flex';
-  navStack=[]; showScreen('home');
-}
+function showScaryAlert(){const o=document.getElementById('scaryOverlay');o.style.display='flex';let s=30;document.getElementById('scaryCountdown').textContent=s;const iv=setInterval(()=>{s--;document.getElementById('scaryCountdown').textContent=s;if(s<=0){clearInterval(iv);o.style.display='none';blocked=false;attempts=0;input='';updateDisplay();document.getElementById('lockError').textContent='';}},1000);}
+function logout(){input='';updateDisplay();document.getElementById('mainApp').style.display='none';document.getElementById('lockScreen').style.display='flex';navStack=[];showScreen('home',"Codes d'accès & Parkings",false);}
 
-/* ══════ NAVIGATION ══════ */
+// NAV
 let navStack=[];
-const TITLES={
-  'home':'SAMSIC APMR · CDG',
-  'codes':'CODES D\'ACCÈS',
-  'codes-t1':'TERMINAL 1 · CODES',
-  'codes-t2':'TERMINAL 2 · CODES',
-  'codes-t3':'TERMINAL 3 · CODES',
-  'parkings':'POINTS DE PARKINGS',
-  'park-t1':'TERMINAL 1 · PARKINGS',
-  'park-t2a':'TERMINAL 2A · PARKINGS',
-  'park-t2c':'TERMINAL 2C · PARKINGS',
-  'park-t2b':'TERMINAL 2B · PARKINGS',
-  'park-t2d':'TERMINAL 2D · PARKINGS',
-  'tt':'TRANSITS PISTE',
-  'search':'RECHERCHE GLOBALE',
-};
+const TITLES={home:"Codes d'accès & Parkings",codes:"CODES D'ACCÈS",codes_t1:'TERMINAL 1',codes_t2:'TERMINAL 2',codes_t3:'TERMINAL 3',chair:"CHAISES DE TRANSFERT",parkings:'POINTS DE PARKINGS',park_t1:'TERMINAL 1',park_t2a:'TERMINAL 2A',park_t2b:'TERMINAL 2B',park_t2c:'TERMINAL 2C',park_t2d:'TERMINAL 2D',search:'RECHERCHE PARKING',tt:'TRANSITS PISTE'};
 
-function showScreen(id){
+function showScreen(id,title,pushHistory){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
-  document.getElementById('headerTitle').textContent='✈ '+(TITLES[id]||id.toUpperCase());
-  document.getElementById('backBtn').style.display=(id==='home'?'none':'block');
-  // Reset codes sur les écrans de codes
-  if(id.startsWith('codes-')){
-    document.querySelectorAll('#screen-'+id+' .card-code').forEach(c=>{
-      c.dataset.hidden='true';
-      const h=c.closest('.card').querySelector('.card-hint');
-      if(h)h.style.display='';
-    });
+  document.getElementById('headerTitle').textContent='✈ '+title;
+  const isHome=id==='home';
+  document.getElementById('backBtn').style.display=isHome?'none':'block';
+  if(id.startsWith('codes-')||id.startsWith('park-')||id==='search'||id==='chair'){
+    document.querySelectorAll('#screen-'+id+' .card-code').forEach(c=>{c.dataset.hidden='true';const h=c.closest('.card').querySelector('.card-hint');if(h)h.style.display='';});
   }
   if(id==='search'){document.getElementById('mainParkSearch').value='';searchParking('');}
 }
 
 function nav(id,title){
   navStack.push(id);
-  showScreen(id);
+  showScreen(id,title||TITLES[id]||id.toUpperCase(),true);
 }
 
 function goBack(){
   navStack.pop();
-  if(navStack.length===0){navStack=[];showScreen('home');return;}
-  showScreen(navStack[navStack.length-1]);
+  if(navStack.length===0){navStack=[];showScreen('home',TITLES['home'],false);return;}
+  const prev=navStack[navStack.length-1];
+  showScreen(prev,TITLES[prev]||prev.toUpperCase(),false);
 }
 
-/* ══════ REVEAL / COPY ══════ */
-const timers=new WeakMap(); let toastTimer;
+// REVEAL
+const timers=new WeakMap();let toastTimer;
 function reveal(card){
-  const code=card.querySelector('.card-code'), hint=card.querySelector('.card-hint');
+  const code=card.querySelector('.card-code'),hint=card.querySelector('.card-hint');
   if(code.dataset.hidden==='true'){
-    code.dataset.hidden='false';
-    if(hint)hint.style.display='none';
+    code.dataset.hidden='false';if(hint)hint.style.display='none';
     clearTimeout(timers.get(card));
     timers.set(card,setTimeout(()=>{code.dataset.hidden='true';if(hint)hint.style.display='';},5000));
   }else{
     const v=code.dataset.code;
-    if(v)navigator.clipboard.writeText(v).catch(()=>{});
-    code.classList.add('flash'); setTimeout(()=>code.classList.remove('flash'),400);
+    if(v&&v!=='—')navigator.clipboard.writeText(v).catch(()=>{});
+    code.classList.add('flash');setTimeout(()=>code.classList.remove('flash'),400);
     showToast('✓  '+v+'  COPIÉ');
   }
 }
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
 </script>
 
 </body>
