@@ -18,6 +18,12 @@
 html,body{min-height:100%;background:var(--bg);font-family:'Rajdhani',sans-serif;color:var(--text);}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:0;}
 
+/* NEON EFFECT */
+@keyframes neonPulse{0%{filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);}50%{filter:drop-shadow(0 0 16px currentColor) drop-shadow(0 0 32px currentColor);}100%{filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);}}
+@keyframes neonMove{0%,100%{transform:translateX(-2px);}50%{transform:translateX(2px);}}
+@keyframes neonColorFlow{0%{color:#3b82f6;}25%{color:#8b5cf6;}50%{color:#ec4899;}75%{color:#06b6d4;}100%{color:#3b82f6;}}
+.neon-text{animation:neonColorFlow 4s ease-in-out infinite,neonPulse 2s ease-in-out infinite,neonMove 1.5s ease-in-out infinite;}
+
 /* INTRO */
 #lampScreen{position:fixed;inset:0;z-index:300;background:#0c1018;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;transition:opacity .7s ease;}
 #lampScreen.exiting{opacity:0;pointer-events:none;}
@@ -314,7 +320,7 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
 <div class="app" id="mainApp" style="display:none">
   <header>
     <button class="back-btn" id="backBtn" onclick="goBack()">←</button>
-    <div><h1 id="headerTitle">✈ Codes d'accès &amp; Parkings</h1><p id="headerSub">SAMSIC APMR · CDG</p></div>
+    <div><h1 id="headerTitle" class="neon-text">✈ Codes d'accès &amp; Parkings</h1><p id="headerSub">SAMSIC APMR · CDG</p></div>
     <button class="logout-btn" onclick="logout()">🔒</button>
   </header>
 
@@ -367,26 +373,15 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <!-- CODES T2 -->
 
   <div class="screen screen-codes2" id="screen-codes-t2">
-    <div class="screen-title c2">▸ TERMINAL 2 · CODES</div>
-    <div class="sub-section">▸ TERMINAL 2A</div>
-    <div class="cards-led codes2"><div class="cards-wrap">
-      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
-    </div></div>
-    <div class="sub-section">▸ TERMINAL 2B</div>
+    <div class="screen-title c2">▸ TERMINAL 2 · CODES COMMUNS</div>
     <div class="cards-led codes2"><div class="cards-wrap">
       <div class="card" onclick="reveal(this)"><div class="card-room">Salle de pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="1976B">1976B</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Salle Repli / Cuisine</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="C1987Z">C1987Z</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Hommes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
       <div class="card" onclick="reveal(this)"><div class="card-room">Vestiaires Femmes</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="0000">0000</div></div></div>
     </div></div>
-    <div class="sub-section">▸ TERMINAL 2C</div>
-    <div class="cards-led codes2"><div class="cards-wrap">
-      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
-    </div></div>
-    <div class="sub-section">▸ TERMINAL 2D</div>
-    <div class="cards-led codes2"><div class="cards-wrap">
-      <div class="card" onclick="reveal(this)"><div class="card-room">Salle pointage</div><div class="card-right"><div class="card-hint">APPUYER</div><div class="card-code" data-hidden="true" data-code="—">—</div></div></div>
-    </div></div>
+    <div class="sub-section">▸ NOTES SPÉCIALES SOUS-TERMINAUX</div>
+    <div class="remark-box">Terminal 2A · 2C → accès identiques<br>Terminal 2B · 2D → accès identiques</div>
   </div>
 
   <!-- CODES T3 -->
@@ -560,7 +555,7 @@ footer{text-align:center;margin-top:30px;font-family:'Share Tech Mono',monospace
   <!-- RECHERCHE PARKINGS GLOBALE -->
 
   <div class="screen" id="screen-search">
-    <div class="screen-title c4">▸ ���� RECHERCHE PARKING → PORTE</div>
+    <div class="screen-title c4">▸ 🔍 RECHERCHE PARKING → PORTE</div>
     <div class="park-search-wrap">
       <span class="search-ico">🔍</span>
       <input class="park-search" id="mainParkSearch" type="text" placeholder="Ex: U06, A10, B18, C08, D14…" oninput="searchParking(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
